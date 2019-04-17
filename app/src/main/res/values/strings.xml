@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Movi EZ</string>
+    <string name="hint_search">Search for movies</string>
+    <string name="title_popular">Popular</string>
+    <string name="title_nowplaying">Now Playing</string>
+    <string name="title_upcoming">Up Coming</string>
+    <string name="title_toprate">Top Rate</string>
+
+    <string name="title_home">Home</string>
+    <string name="title_genres">Genres</string>
+    <string name="title_favorite">Favorite</string>
+</resources>

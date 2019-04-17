@@ -1,0 +1,23 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/color_primary</item>
+        <item name="colorPrimaryDark">@color/color_primary_dark</item>
+        <item name="colorAccent">@color/color_accent</item>
+        <item name="android:statusBarColor">@color/color_white</item>
+        <item name="android:windowBackground">@color/color_light_gray</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+    <!--Splash screen theme-->
+    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@drawable/bg_splash</item>
+    </style>
+    <!-- RecyclerView title theme-->
+    <style name="RecyclerTitleTheme">
+        <item name="android:fontFamily">@font/lato_bold</item>
+        <item name="android:textColor">@color/color_black</item>
+        <item name="android:textSize">@dimen/sp_25</item>
+        <item name="android:layout_marginBottom">@dimen/dp_10</item>
+    </style>
+</resources>
