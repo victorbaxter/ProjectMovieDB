@@ -1,60 +1,73 @@
 package phuchh.sunasterisk.projectmoviedb.data.source.remote
 
 import android.content.Context
-import io.reactivex.Observable
 import phuchh.sunasterisk.projectmoviedb.data.model.Actor
 import phuchh.sunasterisk.projectmoviedb.data.model.Movie
 import phuchh.sunasterisk.projectmoviedb.data.model.response.GenreResponse
 import phuchh.sunasterisk.projectmoviedb.data.model.response.MovieResponse
 import phuchh.sunasterisk.projectmoviedb.data.source.MovieDataSource
+import retrofit2.Call
 
-class MovieRemoteDataSource private constructor(apiRequest: ApiRequest) : MovieDataSource.Remote {
-    private var mApiRequest = apiRequest
-
+class MovieRemoteDataSource private constructor(private val apiRequest: ApiRequest) : MovieDataSource.Remote {
     companion object {
-        private var mMovieRemoteDataSource: MovieRemoteDataSource? = null
+        private var movieRemoteDataSource: MovieRemoteDataSource? = null
 
         fun getInstance(context: Context): MovieRemoteDataSource {
-            if (mMovieRemoteDataSource == null) {
-                mMovieRemoteDataSource = MovieRemoteDataSource(NetworkService.getInstance(context))
+            if (movieRemoteDataSource == null) {
+                movieRemoteDataSource = MovieRemoteDataSource(NetworkService.getInstance(context))
             }
-            return mMovieRemoteDataSource!!
+            return movieRemoteDataSource!!
         }
     }
 
-    override fun getGenres(): Observable<GenreResponse> {
-        return mApiRequest.getGenres()
+    override fun getGenres(): Call<GenreResponse> {
+        return apiRequest.getGenres()
     }
 
-    override fun getMoviesTrendingByDay(): Observable<MovieResponse> {
-        return mApiRequest.getTrendingMoviesByDay()
+    override fun getPopularMovies(): Call<MovieResponse> {
+        return apiRequest.getPopularMovies()
     }
 
-    override fun getMoviesByCategory(categoryType: String, page: Int): Observable<MovieResponse> {
-        return mApiRequest.getMoviesByCategory(categoryType, page)
+    override fun getComingMovies(): Call<MovieResponse> {
+        return apiRequest.getComingMovies()
     }
 
-    override fun getMoviesByGenre(idGenre: String, page: Int): Observable<MovieResponse> {
-        return mApiRequest.getMoviesByGenre(idGenre, page)
+    override fun getPlayingMovies(): Call<MovieResponse> {
+        return apiRequest.getComingMovies()
     }
 
-    override fun getMoviesByActor(idActor: String, page: Int): Observable<MovieResponse> {
-        return mApiRequest.getMoviesByActor(idActor, page)
+    override fun getTopMovies(): Call<MovieResponse> {
+        return apiRequest.getTopMovies()
+    }
+    override fun getMoviesTrendingByDay(): Call<MovieResponse> {
+        return apiRequest.getTrendingMoviesByDay()
     }
 
-    override fun getMoviesByCompany(idCompany: Int, page: Int): Observable<MovieResponse> {
-        return mApiRequest.getMoviesByCompany(idCompany, page)
+    override fun getMoviesByCategory(categoryType: String, page: Int): Call<MovieResponse> {
+        return apiRequest.getMoviesByCategory(categoryType, page)
     }
 
-    override fun getMovieDetail(idMovie: Int): Observable<Movie> {
-        return mApiRequest.getMovieDetail(idMovie)
+    override fun getMoviesByGenre(idGenre: String, page: Int): Call<MovieResponse> {
+        return apiRequest.getMoviesByGenre(idGenre, page)
     }
 
-    override fun searchMovieByName(key: String, page: Int): Observable<MovieResponse> {
-        return mApiRequest.searchMovieByName(key, page)
+    override fun getMoviesByActor(idActor: String, page: Int): Call<MovieResponse> {
+        return apiRequest.getMoviesByActor(idActor, page)
     }
 
-    override fun getProfile(actorId: String): Observable<Actor> {
-        return mApiRequest.getProfile(actorId)
+    override fun getMoviesByCompany(idCompany: Int, page: Int): Call<MovieResponse> {
+        return apiRequest.getMoviesByCompany(idCompany, page)
+    }
+
+    override fun getMovieDetails(idMovie: Int): Call<Movie> {
+        return apiRequest.getMovieDetails(idMovie)
+    }
+
+    override fun searchMovieByName(key: String, page: Int): Call<MovieResponse> {
+        return apiRequest.searchMovieByName(key, page)
+    }
+
+    override fun getProfile(actorId: String): Call<Actor> {
+        return apiRequest.getProfile(actorId)
     }
 }

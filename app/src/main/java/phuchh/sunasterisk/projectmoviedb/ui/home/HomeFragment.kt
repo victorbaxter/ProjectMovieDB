@@ -1,21 +1,87 @@
 package phuchh.sunasterisk.projectmoviedb.ui.home
 
 
+import android.arch.lifecycle.Lifecycle
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-
 import phuchh.sunasterisk.projectmoviedb.R
+import phuchh.sunasterisk.projectmoviedb.adapter.AdapterCallback
+import phuchh.sunasterisk.projectmoviedb.adapter.MovieRecyclerAdapter
+import phuchh.sunasterisk.projectmoviedb.base.BaseFragment
+import phuchh.sunasterisk.projectmoviedb.data.model.Movie
+import phuchh.sunasterisk.projectmoviedb.data.repository.MovieRepository
+import phuchh.sunasterisk.projectmoviedb.data.source.local.MovieLocalDataSource
+import phuchh.sunasterisk.projectmoviedb.data.source.remote.MovieRemoteDataSource
+import phuchh.sunasterisk.projectmoviedb.databinding.FragmentHomeBinding
+import phuchh.sunasterisk.projectmoviedb.ui.details.DetailsActivity
+import phuchh.sunasterisk.projectmoviedb.utils.Constants
 
 
-class HomeFragment : Fragment() {
+class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_home, container, false)
+    private lateinit var popularAdapter: MovieRecyclerAdapter
+    private lateinit var playingAdapter: MovieRecyclerAdapter
+    private lateinit var topAdapter: MovieRecyclerAdapter
+    private lateinit var comingAdapter: MovieRecyclerAdapter
+    override lateinit var viewModel: HomeViewModel
+
+    override fun getLayoutRes(): Int = R.layout.fragment_home
+
+    override fun initComponent(viewBinding: FragmentHomeBinding, savedInstanceState: Bundle?) {
+        initViewModel()
+        popularAdapter = MovieRecyclerAdapter(movieClickCallback)
+        playingAdapter = MovieRecyclerAdapter(movieClickCallback)
+        topAdapter = MovieRecyclerAdapter(movieClickCallback)
+        comingAdapter = MovieRecyclerAdapter(movieClickCallback)
+        viewBinding.recyclerPopularMovies.adapter = popularAdapter
+        viewBinding.recyclerComingMovies.adapter = comingAdapter
+        viewBinding.recyclerPlayingMovies.adapter = playingAdapter
+        viewBinding.recyclerTopMovies.adapter = topAdapter
+        observeViewModel()
+    }
+
+    private fun initViewModel() {
+        val viewModelFactory = HomeViewModel.Factory(
+            MovieRepository.getInstance(
+                MovieRemoteDataSource.getInstance(context!!),
+                MovieLocalDataSource.getInstance()
+            )
+        )
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(HomeViewModel::class.java)
+    }
+
+    private fun observeViewModel() {
+        viewModel.popularMovies.observe(this,
+            Observer<List<Movie>> { movies ->
+                if (movies != null) {
+                    popularAdapter.setMovies(movies)
+                }
+            })
+
+        viewModel.playingMovies.observe(this,
+            Observer<List<Movie>> { movies ->
+                if (movies != null) {
+                    playingAdapter.setMovies(movies)
+                }
+            })
+        viewModel.topMovies.observe(this,
+            Observer<List<Movie>> { movies ->
+                if (movies != null) {
+                    topAdapter.setMovies(movies)
+                }
+            })
+    }
+
+    private val movieClickCallback = object : AdapterCallback {
+        override fun onItemClick(id: Int) {
+            if (lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
+                val intent = Intent(activity, DetailsActivity::class.java)
+                intent.putExtra(Constants.EXTRA_MOVIE_ID, id)
+                startActivity(intent)
+            }
+        }
     }
 }
+

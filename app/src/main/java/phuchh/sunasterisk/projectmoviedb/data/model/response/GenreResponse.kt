@@ -6,14 +6,5 @@ import phuchh.sunasterisk.projectmoviedb.data.model.Genre
 
 class GenreResponse {
     @SerializedName("genres")
-    @Expose
-    private var mGenres: List<Genre>? = null
-
-    fun getGenres(): List<Genre>? {
-        return mGenres
-    }
-
-    fun setGenres(genres: List<Genre>) {
-        mGenres = genres
-    }
+    val genres: List<Genre>? = null
 }

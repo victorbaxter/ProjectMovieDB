@@ -6,8 +6,9 @@ import phuchh.sunasterisk.projectmoviedb.data.model.Actor
 import phuchh.sunasterisk.projectmoviedb.data.model.Movie
 import phuchh.sunasterisk.projectmoviedb.data.model.response.GenreResponse
 import phuchh.sunasterisk.projectmoviedb.data.model.response.MovieResponse
+import retrofit2.Call
 
-class MovieDataSource {
+interface MovieDataSource {
     interface Local {
         fun getAllFavorite(): ObservableArrayList<Movie>
 
@@ -19,22 +20,30 @@ class MovieDataSource {
     }
 
     interface Remote {
-        fun getGenres(): Observable<GenreResponse>
+        fun getGenres(): Call<GenreResponse>
 
-        fun getMoviesTrendingByDay(): Observable<MovieResponse>
+        fun getPopularMovies(): Call<MovieResponse>
 
-        fun getMoviesByCategory(categoryType: String, page: Int): Observable<MovieResponse>
+        fun getPlayingMovies(): Call<MovieResponse>
 
-        fun getMoviesByGenre(idGenre: String, page: Int): Observable<MovieResponse>
+        fun getTopMovies(): Call<MovieResponse>
 
-        fun getMoviesByActor(idActor: String, page: Int): Observable<MovieResponse>
+        fun getComingMovies(): Call<MovieResponse>
 
-        fun getMoviesByCompany(idCompany: Int, page: Int): Observable<MovieResponse>
+        fun getMoviesTrendingByDay(): Call<MovieResponse>
 
-        fun getMovieDetail(idMovie: Int): Observable<Movie>
+        fun getMoviesByCategory(categoryType: String, page: Int): Call<MovieResponse>
 
-        fun searchMovieByName(key: String, page: Int): Observable<MovieResponse>
+        fun getMoviesByGenre(idGenre: String, page: Int): Call<MovieResponse>
 
-        fun getProfile(actorId: String): Observable<Actor>
+        fun getMoviesByActor(idActor: String, page: Int): Call<MovieResponse>
+
+        fun getMoviesByCompany(idCompany: Int, page: Int): Call<MovieResponse>
+
+        fun getMovieDetails(idMovie: Int): Call<Movie>
+
+        fun searchMovieByName(key: String, page: Int): Call<MovieResponse>
+
+        fun getProfile(actorId: String): Call<Actor>
     }
 }
