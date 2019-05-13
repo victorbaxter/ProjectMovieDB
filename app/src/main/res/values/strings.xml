@@ -10,6 +10,9 @@
     <string name="title_genres">Genres</string>
     <string name="title_favorite">Favorite</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_duration">minutes</string>
+    <string name="title_details_genres">Genres:</string>
+    <string name="title_status">Status</string>
+    <string name="title_release_date">Date:</string>
+    <string name="title_production_company">Production:</string>
 </resources>

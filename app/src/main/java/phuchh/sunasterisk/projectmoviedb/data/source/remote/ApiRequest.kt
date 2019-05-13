@@ -53,7 +53,7 @@ interface ApiRequest {
     ): Call<MovieResponse>
 
     @GET("movie/{movie_id}")
-    fun getMovieDetails(@Path("movie_id") id: Int): Call<Movie>
+    fun getMovieDetails(@Path("movie_id") id: String): Call<Movie>
 
     @GET("search/movie")
     fun searchMovieByName(

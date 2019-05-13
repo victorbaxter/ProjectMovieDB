@@ -40,7 +40,7 @@ interface MovieDataSource {
 
         fun getMoviesByCompany(idCompany: Int, page: Int): Call<MovieResponse>
 
-        fun getMovieDetails(idMovie: Int): Call<Movie>
+        fun getMovieDetails(movieId: Int): Call<Movie>
 
         fun searchMovieByName(key: String, page: Int): Call<MovieResponse>
 

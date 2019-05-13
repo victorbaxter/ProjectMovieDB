@@ -4,7 +4,6 @@ package phuchh.sunasterisk.projectmoviedb.ui.home
 import android.arch.lifecycle.Lifecycle
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
-import android.content.Intent
 import android.os.Bundle
 import phuchh.sunasterisk.projectmoviedb.R
 import phuchh.sunasterisk.projectmoviedb.adapter.AdapterCallback
@@ -16,7 +15,6 @@ import phuchh.sunasterisk.projectmoviedb.data.source.local.MovieLocalDataSource
 import phuchh.sunasterisk.projectmoviedb.data.source.remote.MovieRemoteDataSource
 import phuchh.sunasterisk.projectmoviedb.databinding.FragmentHomeBinding
 import phuchh.sunasterisk.projectmoviedb.ui.details.DetailsActivity
-import phuchh.sunasterisk.projectmoviedb.utils.Constants
 
 
 class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
@@ -77,9 +75,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
     private val movieClickCallback = object : AdapterCallback {
         override fun onItemClick(id: Int) {
             if (lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
-                val intent = Intent(activity, DetailsActivity::class.java)
-                intent.putExtra(Constants.EXTRA_MOVIE_ID, id)
-                startActivity(intent)
+                startActivity(DetailsActivity.getIntent(context!!, id))
             }
         }
     }

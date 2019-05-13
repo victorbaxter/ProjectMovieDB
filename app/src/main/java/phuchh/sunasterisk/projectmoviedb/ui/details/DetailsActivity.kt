@@ -2,6 +2,8 @@ package phuchh.sunasterisk.projectmoviedb.ui.details
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import phuchh.sunasterisk.projectmoviedb.R
 import phuchh.sunasterisk.projectmoviedb.adapter.DetailsViewPagerAdapter
@@ -12,20 +14,31 @@ import phuchh.sunasterisk.projectmoviedb.data.source.local.MovieLocalDataSource
 import phuchh.sunasterisk.projectmoviedb.data.source.remote.MovieRemoteDataSource
 import phuchh.sunasterisk.projectmoviedb.databinding.ActivityDetailsBinding
 import phuchh.sunasterisk.projectmoviedb.ui.movie.MovieDetailsFragment
-import phuchh.sunasterisk.projectmoviedb.utils.Constants
-
-private const val TITLE_DETAILS = "Details"
-private const val TITLE_CAST = "Cast"
-private const val TITLE_PRODUCERS = "Producers"
 
 class DetailsActivity : BaseActivity<ActivityDetailsBinding, DetailsViewModel>() {
+    companion object {
+        private const val TITLE_DETAILS = "Details"
+        private const val TITLE_CAST = "Cast"
+        private const val TITLE_PRODUCERS = "Producers"
+        private const val EXTRA_MOVIE_ID = "phuchh.sunasterisk.projectmoviedb.extras.EXTRA_MOVIE_ID"
+
+        fun getIntent(context: Context, id: Int): Intent {
+            val intent = Intent(context, DetailsActivity::class.java)
+            intent.putExtra(EXTRA_MOVIE_ID, id)
+            return intent
+        }
+    }
+
     override fun getLayoutRes(): Int = R.layout.activity_details
     override lateinit var viewModel: DetailsViewModel
-    private var movieId: Int = 0
+    private lateinit var viewBinding: ActivityDetailsBinding
+
     override fun initComponent(viewBinding: ActivityDetailsBinding, savedInstanceState: Bundle?) {
-        movieId = intent.extras!![Constants.EXTRA_MOVIE_ID] as Int
+        this.viewBinding = viewBinding
+        val movieId = intent.getIntExtra(EXTRA_MOVIE_ID, 0)
         initViewModel()
-        initTabs(viewBinding)
+        observeViewModel(movieId)
+        initTabs(viewBinding, movieId)
         viewBinding.btnDetailsBack.setOnClickListener { onBackPressed() }
     }
 
@@ -37,11 +50,10 @@ class DetailsActivity : BaseActivity<ActivityDetailsBinding, DetailsViewModel>()
             )
         )
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(DetailsViewModel::class.java)
-        observeViewModel()
     }
 
 
-    private fun initTabs(binding: ActivityDetailsBinding) {
+    private fun initTabs(binding: ActivityDetailsBinding, movieId: Int) {
         val adapter = DetailsViewPagerAdapter(supportFragmentManager)
         adapter.addFragment(MovieDetailsFragment.newInstance(movieId), TITLE_DETAILS)
         val viewPager = binding.pagerDetails
@@ -49,11 +61,11 @@ class DetailsActivity : BaseActivity<ActivityDetailsBinding, DetailsViewModel>()
         binding.tabDetails.setupWithViewPager(viewPager)
     }
 
-    private fun observeViewModel() {
+    private fun observeViewModel(movieId: Int) {
         viewModel.getMovieDetails(movieId).observe(this,
             Observer<Movie> { movie ->
                 if (movie != null) {
-
+                    viewBinding.movie = movie
                 }
             })
     }
