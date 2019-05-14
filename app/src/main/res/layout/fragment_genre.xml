@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
     <data>
-        <variable name="viewModel" type="phuchh.sunasterisk.projectmoviedb.ui.genre.GenreVIewModel"/>
+        <variable name="viewModel" type="phuchh.sunasterisk.projectmoviedb.ui.genre.GenreViewModel"/>
     </data>
     <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
                                                      xmlns:app="http://schemas.android.com/apk/res-auto"
                                                      xmlns:tools="http://schemas.android.com/tools"
                                                      android:layout_width="match_parent"
                                                      android:layout_height="match_parent"
-                                                     tools:context=".ui.genre.GenreActivity">
+                                                     tools:context=".ui.genre.GenreFragment">
 
         <android.support.design.widget.AppBarLayout
                 android:layout_width="match_parent"

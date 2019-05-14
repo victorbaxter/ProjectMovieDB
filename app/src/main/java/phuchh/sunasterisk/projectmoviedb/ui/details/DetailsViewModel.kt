@@ -7,9 +7,6 @@ import phuchh.sunasterisk.projectmoviedb.base.BaseViewModel
 import phuchh.sunasterisk.projectmoviedb.data.model.Movie
 import phuchh.sunasterisk.projectmoviedb.data.repository.MovieRepository
 
-class DetailsViewModel(val repository: MovieRepository) : BaseViewModel() {
-    fun getMovieDetails(id: Int): LiveData<Movie> = repository.getMovieDetails(id)
-    class Factory(private val repository: MovieRepository) : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T = DetailsViewModel(repository) as T
-    }
+class DetailsViewModel(private val repository: MovieRepository) : BaseViewModel() {
+    //fun getMovieDetails(id: Int): LiveData<Movie> = repository.getMovieDetails(id)
 }

@@ -1,6 +1,7 @@
 package phuchh.sunasterisk.projectmoviedb.utils
 
 import phuchh.sunasterisk.projectmoviedb.data.model.ProductionCompany
+import retrofit2.Response
 
 object StringUtils {
     private const val HYPHEN = " - "
@@ -19,6 +20,13 @@ object StringUtils {
         for (company in companies) {
             builder.append(company.name).append(HYPHEN)
         }
+        return builder.toString()
+    }
+
+    @JvmStatic
+    fun parseError(response: Response<*>): String {
+        val builder = StringBuilder()
+        builder.append(response.code()).append(HYPHEN).append(response.message())
         return builder.toString()
     }
 }

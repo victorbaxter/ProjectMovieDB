@@ -14,6 +14,7 @@ import phuchh.sunasterisk.projectmoviedb.data.source.local.MovieLocalDataSource
 import phuchh.sunasterisk.projectmoviedb.data.source.remote.MovieRemoteDataSource
 import phuchh.sunasterisk.projectmoviedb.databinding.ActivityDetailsBinding
 import phuchh.sunasterisk.projectmoviedb.ui.movie.MovieDetailsFragment
+import phuchh.sunasterisk.projectmoviedb.utils.ViewModelFactory
 
 class DetailsActivity : BaseActivity<ActivityDetailsBinding, DetailsViewModel>() {
     companion object {
@@ -37,19 +38,13 @@ class DetailsActivity : BaseActivity<ActivityDetailsBinding, DetailsViewModel>()
         this.viewBinding = viewBinding
         val movieId = intent.getIntExtra(EXTRA_MOVIE_ID, 0)
         initViewModel()
-        observeViewModel(movieId)
+      //  observeViewModel(movieId)
         initTabs(viewBinding, movieId)
         viewBinding.btnDetailsBack.setOnClickListener { onBackPressed() }
     }
 
     private fun initViewModel() {
-        val viewModelFactory = DetailsViewModel.Factory(
-            MovieRepository.getInstance(
-                MovieRemoteDataSource.getInstance(this),
-                MovieLocalDataSource.getInstance()
-            )
-        )
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(DetailsViewModel::class.java)
+        viewModel = ViewModelProviders.of(this, ViewModelFactory.getInstance(application)).get(DetailsViewModel::class.java)
     }
 
 
@@ -61,12 +56,12 @@ class DetailsActivity : BaseActivity<ActivityDetailsBinding, DetailsViewModel>()
         binding.tabDetails.setupWithViewPager(viewPager)
     }
 
-    private fun observeViewModel(movieId: Int) {
-        viewModel.getMovieDetails(movieId).observe(this,
-            Observer<Movie> { movie ->
-                if (movie != null) {
-                    viewBinding.movie = movie
-                }
-            })
-    }
+//    private fun observeViewModel(movieId: Int) {
+//        viewModel.getMovieDetails(movieId).observe(this,
+//            Observer<Movie> { movie ->
+//                if (movie != null) {
+//                    viewBinding.textMovieTitle.text = movie.title
+//                }
+//            })
+//    }
 }

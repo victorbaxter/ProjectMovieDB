@@ -12,6 +12,7 @@ import phuchh.sunasterisk.projectmoviedb.data.source.local.MovieLocalDataSource
 import phuchh.sunasterisk.projectmoviedb.data.source.remote.MovieRemoteDataSource
 import phuchh.sunasterisk.projectmoviedb.databinding.FragmentMovieDetailsBinding
 import phuchh.sunasterisk.projectmoviedb.utils.BindingUtils
+import phuchh.sunasterisk.projectmoviedb.utils.ViewModelFactory
 
 class MovieDetailsFragment : BaseFragment<FragmentMovieDetailsBinding, MovieDetailsViewModel>() {
 
@@ -32,28 +33,22 @@ class MovieDetailsFragment : BaseFragment<FragmentMovieDetailsBinding, MovieDeta
         this.viewBinding = viewBinding
         val id = arguments!!.getInt(ARGUMENT_ID)
         initViewModel()
-        observeViewModel(id)
+     //   observeViewModel(id)
     }
 
     private fun initViewModel() {
-        val viewModelFactory = MovieDetailsViewModel.Factory(
-            MovieRepository.getInstance(
-                MovieRemoteDataSource.getInstance(context!!),
-                MovieLocalDataSource.getInstance()
-            )
-        )
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(MovieDetailsViewModel::class.java)
+        viewModel = ViewModelProviders.of(this, ViewModelFactory.getInstance(activity!!.application)).get(MovieDetailsViewModel::class.java)
     }
 
-    private fun observeViewModel(movieId: Int) {
-        viewModel.getMovieDetails(movieId).observe(viewLifecycleOwner,
-            Observer<Movie> { movie ->
-                if (movie != null) {
-                    updateMovieDetails(movie)
-                }
-            })
-
-    }
+//    private fun observeViewModel(movieId: Int) {
+//        viewModel.getMovieDetails(movieId).observe(viewLifecycleOwner,
+//            Observer<Movie> { movie ->
+//                if (movie != null) {
+//                    updateMovieDetails(movie)
+//                }
+//            })
+//
+//    }
 
     private fun updateMovieDetails(movie: Movie) {
         BindingUtils.bindImage(viewBinding.imageDetailsPoster, movie.posterPath!!)

@@ -5,14 +5,14 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import phuchh.sunasterisk.projectmoviedb.R
-import phuchh.sunasterisk.projectmoviedb.data.model.Movie
+import phuchh.sunasterisk.projectmoviedb.data.model.Genre
 
-class MovieRecyclerAdapter(private val callback: AdapterCallback) : RecyclerView.Adapter<MovieRecyclerAdapter.ViewHolder>() {
-    private var movies : List<Movie>? = null
+class GenreRecyclerAdapter(val callback: AdapterCallback) : RecyclerView.Adapter<GenreRecyclerAdapter.ViewHolder>() {
+    private var genres: List<Genre>? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding: phuchh.sunasterisk.projectmoviedb.databinding.ItemMovieBinding = DataBindingUtil.inflate(
+        val binding: phuchh.sunasterisk.projectmoviedb.databinding.ItemGenreBinding = DataBindingUtil.inflate(
             LayoutInflater.from(parent.context),
-            R.layout.item_movie,
+            R.layout.item_genre,
             parent,
             false
         )
@@ -20,20 +20,18 @@ class MovieRecyclerAdapter(private val callback: AdapterCallback) : RecyclerView
         return ViewHolder(binding)
     }
 
-    override fun getItemCount(): Int {
-        return if (movies ==null) 0 else movies!!.size
-    }
+    override fun getItemCount(): Int = if (genres == null) 0 else genres!!.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.binding.movie = movies!![position]
+        holder.binding.genre = genres!![position]
     }
 
-    fun setMovies(movies: List<Movie>) {
-        this.movies = movies
+    fun setGenres(genres: List<Genre>) {
+        this.genres = genres
         notifyDataSetChanged()
     }
 
     class ViewHolder(
-        var binding: phuchh.sunasterisk.projectmoviedb.databinding.ItemMovieBinding
+        var binding: phuchh.sunasterisk.projectmoviedb.databinding.ItemGenreBinding
     ) : RecyclerView.ViewHolder(binding.root)
 }

@@ -12,14 +12,14 @@
                   android:layout_height="150dp"
                   android:layout_margin="@dimen/dp_10"
                   android:orientation="vertical"
-    android:onClick="@{()->callback.onItemClick(movie.id)}">
+                  android:onClick="@{()->callback.onItemClick(movie.id)}">
         <FrameLayout
                 android:layout_width="match_parent"
-                                            android:layout_height="wrap_content">
+                android:layout_height="wrap_content">
             <ImageView android:layout_width="match_parent"
                        android:layout_height="110dp"
                        android:scaleType="centerCrop"
-                       app:bindImage="@{movie.backdropPath}"/>
+                       app:bindImage="@{movie.posterPath}"/>
             <TextView android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
                       android:background="@drawable/bg_rate"

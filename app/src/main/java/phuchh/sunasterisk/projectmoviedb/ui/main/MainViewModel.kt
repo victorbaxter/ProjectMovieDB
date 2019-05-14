@@ -8,9 +8,5 @@ import phuchh.sunasterisk.projectmoviedb.data.model.Movie
 import phuchh.sunasterisk.projectmoviedb.data.repository.MovieRepository
 
 class MainViewModel(repository: MovieRepository) : BaseViewModel() {
-    val latestMovies: LiveData<List<Movie>> = repository.getMoviesTrendingByDay()
-
-    class Factory(private val repository: MovieRepository) : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T = MainViewModel(repository) as T
-    }
+  //  val latestMovies: LiveData<List<Movie>> = repository.getMoviesTrendingByDay()
 }
