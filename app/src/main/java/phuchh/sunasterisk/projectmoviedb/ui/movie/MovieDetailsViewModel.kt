@@ -5,8 +5,9 @@ import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import phuchh.sunasterisk.projectmoviedb.base.BaseViewModel
 import phuchh.sunasterisk.projectmoviedb.data.model.Movie
+import phuchh.sunasterisk.projectmoviedb.data.model.response.ApiResponse
 import phuchh.sunasterisk.projectmoviedb.data.repository.MovieRepository
 
 class MovieDetailsViewModel(private val repository: MovieRepository) : BaseViewModel() {
-   // fun getMovieDetails(movieId: Int): LiveData<Movie> = repository.getMovieDetails(movieId)
+    fun getMovieDetails(movieId: Int): LiveData<ApiResponse<Movie>> = repository.getMovieDetails(movieId)
 }

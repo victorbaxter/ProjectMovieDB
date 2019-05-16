@@ -34,7 +34,7 @@ interface MovieDataSource {
 
         fun getMoviesByCategory(categoryType: String, page: Int): Call<MovieResponse>
 
-        fun getMoviesByGenre(idGenre: String, page: Int): Call<MovieResponse>
+        fun getMoviesByGenre(genreId: Int, page: Int): Call<MovieResponse>
 
         fun getMoviesByActor(idActor: String, page: Int): Call<MovieResponse>
 

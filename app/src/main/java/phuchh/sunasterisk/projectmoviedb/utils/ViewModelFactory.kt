@@ -9,6 +9,7 @@ import phuchh.sunasterisk.projectmoviedb.data.repository.MovieRepository
 import phuchh.sunasterisk.projectmoviedb.ui.details.DetailsViewModel
 import phuchh.sunasterisk.projectmoviedb.ui.genre.GenreViewModel
 import phuchh.sunasterisk.projectmoviedb.ui.home.HomeViewModel
+import phuchh.sunasterisk.projectmoviedb.ui.list_movie.ListMovieViewModel
 import phuchh.sunasterisk.projectmoviedb.ui.main.MainViewModel
 import phuchh.sunasterisk.projectmoviedb.ui.movie.MovieDetailsViewModel
 
@@ -48,6 +49,8 @@ class ViewModelFactory private constructor(
                     MovieDetailsViewModel(movieRepository)
                 isAssignableFrom(GenreViewModel::class.java) ->
                     GenreViewModel(movieRepository)
+                isAssignableFrom(ListMovieViewModel::class.java) ->
+                    ListMovieViewModel(movieRepository)
                 else ->
                     throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
             }

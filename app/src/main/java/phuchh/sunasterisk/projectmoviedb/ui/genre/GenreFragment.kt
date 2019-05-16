@@ -10,9 +10,14 @@ import phuchh.sunasterisk.projectmoviedb.adapter.GenreRecyclerAdapter
 import phuchh.sunasterisk.projectmoviedb.base.BaseFragment
 import phuchh.sunasterisk.projectmoviedb.data.model.Genre
 import phuchh.sunasterisk.projectmoviedb.databinding.FragmentGenreBinding
+import phuchh.sunasterisk.projectmoviedb.ui.list_movie.ListMovieActivity
 import phuchh.sunasterisk.projectmoviedb.utils.ViewModelFactory
 
 class GenreFragment : BaseFragment<FragmentGenreBinding, GenreViewModel>() {
+    companion object {
+        private const val GENRE = "Movie Genre"
+    }
+
     override fun getLayoutRes(): Int = R.layout.fragment_genre
     override lateinit var viewModel: GenreViewModel
     private lateinit var viewBinding: FragmentGenreBinding
@@ -36,13 +41,13 @@ class GenreFragment : BaseFragment<FragmentGenreBinding, GenreViewModel>() {
 
     private fun initViewModel() {
         viewModel = ViewModelProviders.of(this, ViewModelFactory.getInstance(activity!!.application))
-                .get(GenreViewModel::class.java)
+            .get(GenreViewModel::class.java)
     }
 
     private val genreClickCallback = object : AdapterCallback {
         override fun onItemClick(id: Int) {
             if (lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
-
+                startActivity(ListMovieActivity.getIntent(context!!, id))
             }
         }
     }

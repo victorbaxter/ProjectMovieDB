@@ -4,16 +4,16 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
 import phuchh.sunasterisk.projectmoviedb.R
 import phuchh.sunasterisk.projectmoviedb.adapter.DetailsViewPagerAdapter
 import phuchh.sunasterisk.projectmoviedb.base.BaseActivity
 import phuchh.sunasterisk.projectmoviedb.data.model.Movie
-import phuchh.sunasterisk.projectmoviedb.data.repository.MovieRepository
-import phuchh.sunasterisk.projectmoviedb.data.source.local.MovieLocalDataSource
-import phuchh.sunasterisk.projectmoviedb.data.source.remote.MovieRemoteDataSource
+import phuchh.sunasterisk.projectmoviedb.data.model.response.ApiResponse
 import phuchh.sunasterisk.projectmoviedb.databinding.ActivityDetailsBinding
 import phuchh.sunasterisk.projectmoviedb.ui.movie.MovieDetailsFragment
+import phuchh.sunasterisk.projectmoviedb.ui.trailer.YouTubeFragment
 import phuchh.sunasterisk.projectmoviedb.utils.ViewModelFactory
 
 class DetailsActivity : BaseActivity<ActivityDetailsBinding, DetailsViewModel>() {
@@ -33,20 +33,28 @@ class DetailsActivity : BaseActivity<ActivityDetailsBinding, DetailsViewModel>()
     override fun getLayoutRes(): Int = R.layout.activity_details
     override lateinit var viewModel: DetailsViewModel
     private lateinit var viewBinding: ActivityDetailsBinding
+    private lateinit var youTubeFragment: YouTubeFragment
 
     override fun initComponent(viewBinding: ActivityDetailsBinding, savedInstanceState: Bundle?) {
         this.viewBinding = viewBinding
         val movieId = intent.getIntExtra(EXTRA_MOVIE_ID, 0)
         initViewModel()
-      //  observeViewModel(movieId)
+        observeViewModel(movieId)
         initTabs(viewBinding, movieId)
         viewBinding.btnDetailsBack.setOnClickListener { onBackPressed() }
+        youTubeFragment = supportFragmentManager.findFragmentById(R.id.fragment_youtube) as YouTubeFragment
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        youTubeFragment.setFullScreen(newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE)
     }
 
     private fun initViewModel() {
-        viewModel = ViewModelProviders.of(this, ViewModelFactory.getInstance(application)).get(DetailsViewModel::class.java)
+        viewModel = ViewModelProviders
+            .of(this, ViewModelFactory.getInstance(application))
+            .get(DetailsViewModel::class.java)
     }
-
 
     private fun initTabs(binding: ActivityDetailsBinding, movieId: Int) {
         val adapter = DetailsViewPagerAdapter(supportFragmentManager)
@@ -56,12 +64,25 @@ class DetailsActivity : BaseActivity<ActivityDetailsBinding, DetailsViewModel>()
         binding.tabDetails.setupWithViewPager(viewPager)
     }
 
-//    private fun observeViewModel(movieId: Int) {
-//        viewModel.getMovieDetails(movieId).observe(this,
-//            Observer<Movie> { movie ->
-//                if (movie != null) {
-//                    viewBinding.textMovieTitle.text = movie.title
-//                }
-//            })
-//    }
+    private fun observeViewModel(movieId: Int) {
+        viewModel.getMovieDetails(movieId).observe(this,
+            Observer<ApiResponse<Movie>> {
+                if (it != null) {
+                    updateUI(it)
+                }
+            })
+    }
+
+    private fun updateUI(response: ApiResponse<Movie>?) {
+        if (response != null) {
+            val error: Throwable? = response.error
+            val movie: Movie? = response.result
+            if (error != null) {
+                showToast(error.message!!)
+                return
+            }
+            viewBinding.textMovieTitle.text = movie!!.title
+            youTubeFragment.setTrailerKey(movie.videoResult!!.videos!![0].key!!)
+        }
+    }
 }

@@ -36,7 +36,7 @@ interface ApiRequest {
 
     @GET("discover/movie")
     fun getMoviesByGenre(
-        @Query("with_genres") idGenre: String,
+        @Query("with_genres") idGenre: Int,
         @Query("page") page: Int
     ): Call<MovieResponse>
 
@@ -52,7 +52,7 @@ interface ApiRequest {
         @Query("page") page: Int
     ): Call<MovieResponse>
 
-    @GET("movie/{movie_id}")
+    @GET("movie/{movie_id}?append_to_response=videos")
     fun getMovieDetails(@Path("movie_id") id: String): Call<Movie>
 
     @GET("search/movie")

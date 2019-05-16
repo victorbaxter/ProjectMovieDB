@@ -62,7 +62,7 @@ class MovieRepository private constructor(
 
     fun getMoviesTrendingByDay(): LiveData<ApiResponse<List<Movie>>> = fetchMovies(remote.getMoviesTrendingByDay())
 
-    fun getUpComingMovies():LiveData<ApiResponse<List<Movie>>> = fetchMovies(remote.getComingMovies())
+    fun getUpComingMovies(): LiveData<ApiResponse<List<Movie>>> = fetchMovies(remote.getComingMovies())
 
     fun getMovieDetails(id: Int): LiveData<ApiResponse<Movie>> {
         val data = MutableLiveData<ApiResponse<Movie>>()
@@ -94,6 +94,9 @@ class MovieRepository private constructor(
         })
         return data
     }
+
+    fun getMoviesByGenre(genreId: Int, page: Int): LiveData<ApiResponse<List<Movie>>> =
+        fetchMovies(remote.getMoviesByGenre(genreId, page))
 
     private fun fetchMovies(call: Call<MovieResponse>): LiveData<ApiResponse<List<Movie>>> {
         val data = MutableLiveData<ApiResponse<List<Movie>>>()

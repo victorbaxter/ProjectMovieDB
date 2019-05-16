@@ -1,5 +1,6 @@
 package phuchh.sunasterisk.projectmoviedb.utils
 
+import phuchh.sunasterisk.projectmoviedb.data.model.Genre
 import phuchh.sunasterisk.projectmoviedb.data.model.ProductionCompany
 import retrofit2.Response
 
@@ -19,6 +20,15 @@ object StringUtils {
         val builder = StringBuilder()
         for (company in companies) {
             builder.append(company.name).append(HYPHEN)
+        }
+        return builder.toString()
+    }
+
+    @JvmStatic
+    fun getGenres(genres: List<Genre>): String {
+        val builder = StringBuilder()
+        for (genre in genres) {
+            builder.append(genre.name).append(HYPHEN)
         }
         return builder.toString()
     }

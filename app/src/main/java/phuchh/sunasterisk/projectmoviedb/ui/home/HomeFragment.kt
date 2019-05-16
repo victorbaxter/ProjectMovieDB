@@ -36,18 +36,27 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
     override fun initComponent(viewBinding: FragmentHomeBinding, savedInstanceState: Bundle?) {
         initViewModel()
-        popularAdapter = MovieRecyclerAdapter(movieClickCallback)
-        playingAdapter = MovieRecyclerAdapter(movieClickCallback)
-        topAdapter = MovieRecyclerAdapter(movieClickCallback)
-        comingAdapter = MovieRecyclerAdapter(movieClickCallback)
+        initAdapter(viewBinding)
         pagerLatest = viewBinding.pagerLatest
         indicator = viewBinding.indicator
         sliderAdapter = SliderAdapter(context!!)
+        observeViewModel()
+    }
+
+    private fun initAdapter(viewBinding: FragmentHomeBinding) {
+        popularAdapter = MovieRecyclerAdapter(movieClickCallback)
+        popularAdapter.setLayoutRes(R.layout.item_movie)
+        playingAdapter = MovieRecyclerAdapter(movieClickCallback)
+        playingAdapter.setLayoutRes(R.layout.item_movie)
+        topAdapter = MovieRecyclerAdapter(movieClickCallback)
+        topAdapter.setLayoutRes(R.layout.item_movie)
+        comingAdapter = MovieRecyclerAdapter(movieClickCallback)
+        comingAdapter.setLayoutRes(R.layout.item_movie)
+
         viewBinding.recyclerPopularMovies.adapter = popularAdapter
         viewBinding.recyclerComingMovies.adapter = comingAdapter
         viewBinding.recyclerPlayingMovies.adapter = playingAdapter
         viewBinding.recyclerTopMovies.adapter = topAdapter
-        observeViewModel()
     }
 
     private fun initViewModel() {
@@ -58,19 +67,23 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
     private fun observeViewModel() {
         viewModel.run {
             popularMovies.observe(viewLifecycleOwner,
-                Observer<ApiResponse<List<Movie>>> {
+                Observer {
                     updateUI(it, popularAdapter)
                 })
             playingMovies.observe(viewLifecycleOwner,
-                Observer<ApiResponse<List<Movie>>> {
+                Observer {
                     updateUI(it, playingAdapter)
                 })
             topMovies.observe(viewLifecycleOwner,
-                Observer<ApiResponse<List<Movie>>> {
+                Observer {
                     updateUI(it, topAdapter)
                 })
+            upComingMovies.observe(viewLifecycleOwner,
+                Observer {
+                    updateUI(it, comingAdapter)
+                })
             latestMovies.observe(viewLifecycleOwner,
-                Observer<ApiResponse<List<Movie>>> {
+                Observer {
                     if (it != null) {
                         val error: Throwable? = it.error
                         val movies: List<Movie>? = it.result
@@ -118,10 +131,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
             if (lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
                 activity!!.runOnUiThread {
                     if (pagerLatest.currentItem < latestMovies.size - 1) {
-                        pagerLatest.currentItem = pagerLatest.currentItem + 1
-                    } else {
-                        pagerLatest.currentItem = 0
+                        pagerLatest.currentItem++
+                        return@runOnUiThread
                     }
+                    pagerLatest.currentItem = 0
                 }
             }
         }

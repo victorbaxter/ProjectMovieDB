@@ -12,8 +12,7 @@
         <FrameLayout
                 android:id="@+id/frame_container"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dp_50"/>
+                android:layout_height="wrap_content"/>
         <android.support.design.widget.BottomNavigationView
                 android:id="@+id/navigation"
                 android:layout_width="match_parent"

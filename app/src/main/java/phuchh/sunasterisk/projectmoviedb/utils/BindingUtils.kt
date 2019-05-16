@@ -19,6 +19,20 @@ object BindingUtils {
     @JvmStatic
     @BindingAdapter("bindProductionCompany")
     fun bindProductionCompany(textView: TextView, movie: Movie) {
-        textView.text = StringUtils.getProductionCompany(movie.productionCompanies!!)
+        if (movie.productionCompanies != null) {
+            textView.text = StringUtils.getProductionCompany(movie.productionCompanies)
+            textView.isSelected = true
+        }
+    }
+
+
+    @JvmStatic
+    @BindingAdapter("bindGenres")
+    fun bindGenres(textView: TextView, movie: Movie) {
+        val genres = movie.genres
+        if (genres != null) {
+            textView.text = StringUtils.getGenres(genres)
+            textView.isSelected = true
+        }
     }
 }

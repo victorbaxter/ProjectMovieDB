@@ -47,8 +47,8 @@ class MovieRemoteDataSource private constructor(private val apiRequest: ApiReque
         return apiRequest.getMoviesByCategory(categoryType, page)
     }
 
-    override fun getMoviesByGenre(idGenre: String, page: Int): Call<MovieResponse> {
-        return apiRequest.getMoviesByGenre(idGenre, page)
+    override fun getMoviesByGenre(genreId:Int, page: Int): Call<MovieResponse> {
+        return apiRequest.getMoviesByGenre(genreId, page)
     }
 
     override fun getMoviesByActor(idActor: String, page: Int): Call<MovieResponse> {

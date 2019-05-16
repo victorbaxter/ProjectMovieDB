@@ -7,15 +7,16 @@
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content"
-                  android:layout_margin="@dimen/dp_15"
                   android:onClick="@{()->callback.onItemClick(genre.id)}">
         <android.support.v7.widget.CardView android:layout_width="match_parent"
-                                            android:layout_height="wrap_content">
+                                            android:layout_height="wrap_content"
+                                            style="@style/CardViewTheme">
             <TextView android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
                       android:fontFamily="@font/lato_bold"
                       android:textSize="@dimen/sp_25"
-                      android:text="@{genre.name}"/>
+                      android:text="@{genre.name}"
+                      android:layout_margin="@dimen/dp_15"/>
         </android.support.v7.widget.CardView>
     </LinearLayout>
 </layout>

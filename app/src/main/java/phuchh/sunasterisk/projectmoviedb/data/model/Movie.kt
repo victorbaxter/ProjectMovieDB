@@ -35,4 +35,12 @@ class Movie {
 
     @SerializedName("vote_average")
     val voteAverage: Double = 0.toDouble()
+
+    @SerializedName("videos")
+    val videoResult: VideoResult? = null
+
+    inner class VideoResult {
+        @SerializedName("results")
+        val videos: List<Video>? = null
+    }
 }

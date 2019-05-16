@@ -9,15 +9,16 @@
             android:layout_height="match_parent"
             tools:context=".ui.details.DetailsActivity"
             android:orientation="vertical">
-        <FrameLayout android:layout_width="match_parent"
-                     android:layout_height="wrap_content"
-                     android:background="@color/color_white">
+        <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/color_white">
             <TextView
                     android:id="@+id/textMovieTitle"
                     android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"
-                      android:fontFamily="@font/lato_bold"
-                      android:layout_gravity="center"/>
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lato_bold"
+                    android:layout_gravity="center"/>
             <ImageButton
                     android:id="@+id/btn_details_back"
                     android:layout_width="wrap_content"
@@ -32,6 +33,12 @@
                     android:background="@color/color_white"
                     android:layout_gravity="end"/>
         </FrameLayout>
+        <fragment
+                android:id="@+id/fragment_youtube"
+                android:name="phuchh.sunasterisk.projectmoviedb.ui.trailer.YouTubeFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
         <android.support.v7.widget.CardView android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             style="@style/CardViewTheme">

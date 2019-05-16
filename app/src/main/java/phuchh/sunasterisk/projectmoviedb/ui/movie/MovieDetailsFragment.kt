@@ -4,12 +4,11 @@ package phuchh.sunasterisk.projectmoviedb.ui.movie
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.text.method.ScrollingMovementMethod
 import phuchh.sunasterisk.projectmoviedb.R
 import phuchh.sunasterisk.projectmoviedb.base.BaseFragment
 import phuchh.sunasterisk.projectmoviedb.data.model.Movie
-import phuchh.sunasterisk.projectmoviedb.data.repository.MovieRepository
-import phuchh.sunasterisk.projectmoviedb.data.source.local.MovieLocalDataSource
-import phuchh.sunasterisk.projectmoviedb.data.source.remote.MovieRemoteDataSource
+import phuchh.sunasterisk.projectmoviedb.data.model.response.ApiResponse
 import phuchh.sunasterisk.projectmoviedb.databinding.FragmentMovieDetailsBinding
 import phuchh.sunasterisk.projectmoviedb.utils.BindingUtils
 import phuchh.sunasterisk.projectmoviedb.utils.ViewModelFactory
@@ -32,31 +31,46 @@ class MovieDetailsFragment : BaseFragment<FragmentMovieDetailsBinding, MovieDeta
     override fun initComponent(viewBinding: FragmentMovieDetailsBinding, savedInstanceState: Bundle?) {
         this.viewBinding = viewBinding
         val id = arguments!!.getInt(ARGUMENT_ID)
+        viewBinding.textDetailsInfo.movementMethod = ScrollingMovementMethod()
         initViewModel()
-     //   observeViewModel(id)
+        observeViewModel(id)
     }
 
     private fun initViewModel() {
-        viewModel = ViewModelProviders.of(this, ViewModelFactory.getInstance(activity!!.application)).get(MovieDetailsViewModel::class.java)
+        viewModel = ViewModelProviders.of(this, ViewModelFactory.getInstance(activity!!.application))
+            .get(MovieDetailsViewModel::class.java)
     }
 
-//    private fun observeViewModel(movieId: Int) {
-//        viewModel.getMovieDetails(movieId).observe(viewLifecycleOwner,
-//            Observer<Movie> { movie ->
-//                if (movie != null) {
-//                    updateMovieDetails(movie)
-//                }
-//            })
-//
-//    }
+    private fun observeViewModel(movieId: Int) {
+        viewModel.getMovieDetails(movieId).observe(viewLifecycleOwner,
+            Observer<ApiResponse<Movie>> {
+                if (it != null) {
+                    updateUI(it)
+                }
+            })
 
-    private fun updateMovieDetails(movie: Movie) {
+    }
+
+    private fun updateUI(response: ApiResponse<Movie>?) {
+        if (response != null) {
+            val error: Throwable? = response.error
+            val movie: Movie? = response.result
+            if (error != null) {
+                showToast(error.message!!)
+                return
+            }
+            setMovieDetails(movie!!)
+        }
+    }
+
+    private fun setMovieDetails(movie: Movie) {
         BindingUtils.bindImage(viewBinding.imageDetailsPoster, movie.posterPath!!)
         viewBinding.textDetailsTitle.text = movie.title
         viewBinding.textDetailsDate.text = movie.releaseDate
         viewBinding.textDetailsDuration.text = movie.runtime.toString()
         viewBinding.textDetailsInfo.text = movie.overview
         viewBinding.textDetailsStatus.text = movie.status
+        BindingUtils.bindGenres(viewBinding.textDetailsGenre, movie)
         BindingUtils.bindProductionCompany(viewBinding.textDetailsProduction, movie)
     }
 }
