@@ -3,6 +3,7 @@ package phuchh.sunasterisk.projectmoviedb.data.source.remote
 import android.content.Context
 import phuchh.sunasterisk.projectmoviedb.data.model.Actor
 import phuchh.sunasterisk.projectmoviedb.data.model.Movie
+import phuchh.sunasterisk.projectmoviedb.data.model.response.CreditResponse
 import phuchh.sunasterisk.projectmoviedb.data.model.response.GenreResponse
 import phuchh.sunasterisk.projectmoviedb.data.model.response.MovieResponse
 import phuchh.sunasterisk.projectmoviedb.data.source.MovieDataSource
@@ -51,8 +52,12 @@ class MovieRemoteDataSource private constructor(private val apiRequest: ApiReque
         return apiRequest.getMoviesByGenre(genreId, page)
     }
 
-    override fun getMoviesByActor(idActor: String, page: Int): Call<MovieResponse> {
-        return apiRequest.getMoviesByActor(idActor, page)
+    override fun getCredits(movieId: Int): Call<CreditResponse> {
+        return apiRequest.getCredits(movieId.toString())
+    }
+
+    override fun getMoviesByActor(actorId: Int, page: Int): Call<MovieResponse> {
+        return apiRequest.getMoviesByActor(actorId, page)
     }
 
     override fun getMoviesByCompany(idCompany: Int, page: Int): Call<MovieResponse> {
@@ -67,7 +72,7 @@ class MovieRemoteDataSource private constructor(private val apiRequest: ApiReque
         return apiRequest.searchMovieByName(key, page)
     }
 
-    override fun getProfile(actorId: String): Call<Actor> {
-        return apiRequest.getProfile(actorId)
+    override fun getProfile(actorId: Int): Call<Actor> {
+        return apiRequest.getProfile(actorId.toString())
     }
 }

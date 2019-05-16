@@ -7,6 +7,4 @@ import phuchh.sunasterisk.projectmoviedb.base.BaseViewModel
 import phuchh.sunasterisk.projectmoviedb.data.model.Movie
 import phuchh.sunasterisk.projectmoviedb.data.repository.MovieRepository
 
-class MainViewModel(repository: MovieRepository) : BaseViewModel() {
-  //  val latestMovies: LiveData<List<Movie>> = repository.getMoviesTrendingByDay()
-}
+class MainViewModel : BaseViewModel()

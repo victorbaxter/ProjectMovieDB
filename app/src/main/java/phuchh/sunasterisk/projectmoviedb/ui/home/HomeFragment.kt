@@ -9,7 +9,7 @@ import android.support.design.widget.TabLayout
 import android.support.v4.view.ViewPager
 import phuchh.sunasterisk.projectmoviedb.R
 import phuchh.sunasterisk.projectmoviedb.adapter.AdapterCallback
-import phuchh.sunasterisk.projectmoviedb.adapter.MovieRecyclerAdapter
+import phuchh.sunasterisk.projectmoviedb.adapter.DataRecyclerAdapter
 import phuchh.sunasterisk.projectmoviedb.adapter.SliderAdapter
 import phuchh.sunasterisk.projectmoviedb.base.BaseFragment
 import phuchh.sunasterisk.projectmoviedb.data.model.Movie
@@ -22,15 +22,17 @@ import java.util.*
 
 class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
-    private lateinit var popularAdapter: MovieRecyclerAdapter
-    private lateinit var playingAdapter: MovieRecyclerAdapter
-    private lateinit var topAdapter: MovieRecyclerAdapter
-    private lateinit var comingAdapter: MovieRecyclerAdapter
+
+    private lateinit var popularAdapter: DataRecyclerAdapter<Movie>
+    private lateinit var playingAdapter: DataRecyclerAdapter<Movie>
+    private lateinit var topAdapter: DataRecyclerAdapter<Movie>
+    private lateinit var comingAdapter: DataRecyclerAdapter<Movie>
     private lateinit var pagerLatest: ViewPager
     private lateinit var indicator: TabLayout
     private lateinit var latestMovies: List<Movie>
     private lateinit var sliderAdapter: SliderAdapter
     override lateinit var viewModel: HomeViewModel
+    private val layoutRes = R.layout.item_movie
 
     override fun getLayoutRes(): Int = R.layout.fragment_home
 
@@ -44,14 +46,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
     }
 
     private fun initAdapter(viewBinding: FragmentHomeBinding) {
-        popularAdapter = MovieRecyclerAdapter(movieClickCallback)
-        popularAdapter.setLayoutRes(R.layout.item_movie)
-        playingAdapter = MovieRecyclerAdapter(movieClickCallback)
-        playingAdapter.setLayoutRes(R.layout.item_movie)
-        topAdapter = MovieRecyclerAdapter(movieClickCallback)
-        topAdapter.setLayoutRes(R.layout.item_movie)
-        comingAdapter = MovieRecyclerAdapter(movieClickCallback)
-        comingAdapter.setLayoutRes(R.layout.item_movie)
+        popularAdapter = DataRecyclerAdapter(movieClickCallback, layoutRes)
+        playingAdapter = DataRecyclerAdapter(movieClickCallback, layoutRes)
+        topAdapter = DataRecyclerAdapter(movieClickCallback, layoutRes)
+        comingAdapter = DataRecyclerAdapter(movieClickCallback, layoutRes)
 
         viewBinding.recyclerPopularMovies.adapter = popularAdapter
         viewBinding.recyclerComingMovies.adapter = comingAdapter
@@ -100,7 +98,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
         }
     }
 
-    private fun updateUI(response: ApiResponse<List<Movie>>?, adapter: MovieRecyclerAdapter) {
+    private fun updateUI(response: ApiResponse<List<Movie>>?, adapter: DataRecyclerAdapter<Movie>) {
         if (response != null) {
             val error: Throwable? = response.error
             val movies: List<Movie>? = response.result
@@ -108,7 +106,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
                 showToast(error.message!!)
                 return
             }
-            adapter.setMovies(movies!!)
+            adapter.setData(movies!!)
         }
     }
 

@@ -2,6 +2,7 @@ package phuchh.sunasterisk.projectmoviedb.data.source.remote
 
 import phuchh.sunasterisk.projectmoviedb.data.model.Actor
 import phuchh.sunasterisk.projectmoviedb.data.model.Movie
+import phuchh.sunasterisk.projectmoviedb.data.model.response.CreditResponse
 import phuchh.sunasterisk.projectmoviedb.data.model.response.GenreResponse
 import phuchh.sunasterisk.projectmoviedb.data.model.response.MovieResponse
 import retrofit2.Call
@@ -40,9 +41,12 @@ interface ApiRequest {
         @Query("page") page: Int
     ): Call<MovieResponse>
 
+    @GET("movie/{movie_id}/credits")
+    fun getCredits(@Path("movie_id") movieId: String): Call<CreditResponse>
+
     @GET("discover/movie")
     fun getMoviesByActor(
-        @Query("with_cast") idCast: String,
+        @Query("with_people") id: Int,
         @Query("page") page: Int
     ): Call<MovieResponse>
 

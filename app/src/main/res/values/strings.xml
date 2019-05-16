@@ -20,4 +20,8 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_vote">Vote Average:</string>
     <string name="title_list_date">Released Date:</string>
+    <string name="title_born">Born:</string>
+    <string name="title_died">Died:</string>
+    <string name="title_list_department">Department:</string>
+    <string name="title_movies">Movies</string>
 </resources>

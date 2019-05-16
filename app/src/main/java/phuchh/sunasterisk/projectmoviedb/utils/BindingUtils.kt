@@ -9,7 +9,7 @@ import phuchh.sunasterisk.projectmoviedb.data.model.Movie
 object BindingUtils {
     @JvmStatic
     @BindingAdapter("bindImage")
-    fun bindImage(imageView: ImageView, image_path: String) {
+    fun bindImage(imageView: ImageView, image_path: String?) {
         GlideApp.with(imageView)
             .load(StringUtils.getImage(image_path))
             .error(R.drawable.no_image)

@@ -12,7 +12,9 @@ import phuchh.sunasterisk.projectmoviedb.base.BaseActivity
 import phuchh.sunasterisk.projectmoviedb.data.model.Movie
 import phuchh.sunasterisk.projectmoviedb.data.model.response.ApiResponse
 import phuchh.sunasterisk.projectmoviedb.databinding.ActivityDetailsBinding
+import phuchh.sunasterisk.projectmoviedb.ui.cast.CastFragment
 import phuchh.sunasterisk.projectmoviedb.ui.movie.MovieDetailsFragment
+import phuchh.sunasterisk.projectmoviedb.ui.producer.ProducerFragment
 import phuchh.sunasterisk.projectmoviedb.ui.trailer.YouTubeFragment
 import phuchh.sunasterisk.projectmoviedb.utils.ViewModelFactory
 
@@ -59,6 +61,8 @@ class DetailsActivity : BaseActivity<ActivityDetailsBinding, DetailsViewModel>()
     private fun initTabs(binding: ActivityDetailsBinding, movieId: Int) {
         val adapter = DetailsViewPagerAdapter(supportFragmentManager)
         adapter.addFragment(MovieDetailsFragment.newInstance(movieId), TITLE_DETAILS)
+        adapter.addFragment(CastFragment.newInstance(movieId), TITLE_CAST)
+        adapter.addFragment(ProducerFragment.newInstance(movieId), TITLE_PRODUCERS)
         val viewPager = binding.pagerDetails
         viewPager.adapter = adapter
         binding.tabDetails.setupWithViewPager(viewPager)

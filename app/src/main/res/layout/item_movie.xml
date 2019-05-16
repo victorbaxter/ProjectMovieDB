@@ -2,7 +2,7 @@
 <layout>
     <data>
         <import type="java.lang.String"/>
-        <variable name="movie" type="phuchh.sunasterisk.projectmoviedb.data.model.Movie"/>
+        <variable name="data" type="phuchh.sunasterisk.projectmoviedb.data.model.Movie"/>
         <variable name="callback" type="phuchh.sunasterisk.projectmoviedb.adapter.AdapterCallback"/>
     </data>
 
@@ -12,14 +12,14 @@
                   android:layout_height="150dp"
                   android:layout_margin="@dimen/dp_10"
                   android:orientation="vertical"
-                  android:onClick="@{()->callback.onItemClick(movie.id)}">
+                  android:onClick="@{()->callback.onItemClick(data.id)}">
         <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
             <ImageView android:layout_width="match_parent"
                        android:layout_height="110dp"
                        android:scaleType="centerCrop"
-                       app:bindImage="@{movie.posterPath}"/>
+                       app:bindImage="@{data.posterPath}"/>
             <TextView android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
                       android:background="@drawable/bg_rate"
@@ -28,10 +28,10 @@
                       android:gravity="center"
                       android:layout_gravity="end"
                       android:layout_margin="@dimen/dp_5"
-                      android:text="@{String.valueOf( movie.voteAverage)}"/>
+                      android:text="@{String.valueOf( data.voteAverage)}"/>
         </FrameLayout>
         <TextView android:layout_width="match_parent"
                   android:layout_height="35dp"
-                  android:text="@{movie.title}"/>
+                  android:text="@{data.title}"/>
     </LinearLayout>
 </layout>

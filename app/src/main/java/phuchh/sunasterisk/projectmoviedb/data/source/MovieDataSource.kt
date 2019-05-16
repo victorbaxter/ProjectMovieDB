@@ -4,6 +4,7 @@ import android.databinding.ObservableArrayList
 import io.reactivex.Observable
 import phuchh.sunasterisk.projectmoviedb.data.model.Actor
 import phuchh.sunasterisk.projectmoviedb.data.model.Movie
+import phuchh.sunasterisk.projectmoviedb.data.model.response.CreditResponse
 import phuchh.sunasterisk.projectmoviedb.data.model.response.GenreResponse
 import phuchh.sunasterisk.projectmoviedb.data.model.response.MovieResponse
 import retrofit2.Call
@@ -36,7 +37,9 @@ interface MovieDataSource {
 
         fun getMoviesByGenre(genreId: Int, page: Int): Call<MovieResponse>
 
-        fun getMoviesByActor(idActor: String, page: Int): Call<MovieResponse>
+        fun getCredits(movieId: Int):Call<CreditResponse>
+
+        fun getMoviesByActor(actorId: Int, page: Int): Call<MovieResponse>
 
         fun getMoviesByCompany(idCompany: Int, page: Int): Call<MovieResponse>
 
@@ -44,6 +47,6 @@ interface MovieDataSource {
 
         fun searchMovieByName(key: String, page: Int): Call<MovieResponse>
 
-        fun getProfile(actorId: String): Call<Actor>
+        fun getProfile(actorId: Int): Call<Actor>
     }
 }

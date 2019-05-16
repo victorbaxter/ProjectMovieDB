@@ -6,17 +6,20 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import phuchh.sunasterisk.projectmoviedb.BR
-import phuchh.sunasterisk.projectmoviedb.data.model.Movie
 
-class MovieRecyclerAdapter(private val callback: AdapterCallback) :
-    RecyclerView.Adapter<MovieRecyclerAdapter.ViewHolder>() {
-    private var movies: MutableList<Movie> = mutableListOf()
-    private var layoutRes: Int? = null
+class DataRecyclerAdapter<T>(private val callback: AdapterCallback, private val layoutRes:Int) :
+    RecyclerView.Adapter<DataRecyclerAdapter.ViewHolder>() {
+
+    private var data: MutableList<T>
+
+    init {
+        data = mutableListOf()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding: ViewDataBinding = DataBindingUtil.inflate(
             LayoutInflater.from(parent.context),
-            layoutRes!!,
+            layoutRes,
             parent,
             false
         )
@@ -24,23 +27,19 @@ class MovieRecyclerAdapter(private val callback: AdapterCallback) :
         return ViewHolder(binding)
     }
 
-    override fun getItemCount(): Int = movies.size
+    override fun getItemCount(): Int = data.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.binding.setVariable(BR.movie , movies[position])
+        holder.binding.setVariable(BR.data, data[position])
     }
 
-    fun setMovies(movies: List<Movie>) {
-        this.movies = movies as MutableList<Movie>
+    fun setData(data: List<T>) {
+        this.data = data as MutableList<T>
         notifyDataSetChanged()
     }
 
-    fun addMovies(movies: List<Movie>){
-        this.movies.addAll(movies)
-    }
-
-    fun setLayoutRes(layoutRes: Int) {
-        this.layoutRes = layoutRes
+    fun addData(data: List<T>) {
+        this.data.addAll(data)
     }
 
     class ViewHolder(

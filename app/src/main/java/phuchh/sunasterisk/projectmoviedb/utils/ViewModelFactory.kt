@@ -6,12 +6,15 @@ import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import android.support.annotation.VisibleForTesting
 import phuchh.sunasterisk.projectmoviedb.data.repository.MovieRepository
+import phuchh.sunasterisk.projectmoviedb.ui.actor.ActorViewModel
+import phuchh.sunasterisk.projectmoviedb.ui.cast.CastViewModel
 import phuchh.sunasterisk.projectmoviedb.ui.details.DetailsViewModel
 import phuchh.sunasterisk.projectmoviedb.ui.genre.GenreViewModel
 import phuchh.sunasterisk.projectmoviedb.ui.home.HomeViewModel
 import phuchh.sunasterisk.projectmoviedb.ui.list_movie.ListMovieViewModel
 import phuchh.sunasterisk.projectmoviedb.ui.main.MainViewModel
 import phuchh.sunasterisk.projectmoviedb.ui.movie.MovieDetailsViewModel
+import phuchh.sunasterisk.projectmoviedb.ui.producer.ProducerViewModel
 
 class ViewModelFactory private constructor(
     private val movieRepository: MovieRepository
@@ -40,7 +43,7 @@ class ViewModelFactory private constructor(
         with(modelClass) {
             when {
                 isAssignableFrom(MainViewModel::class.java) ->
-                    MainViewModel(movieRepository)
+                    MainViewModel()
                 isAssignableFrom(HomeViewModel::class.java) ->
                     HomeViewModel(movieRepository)
                 isAssignableFrom(DetailsViewModel::class.java) ->
@@ -51,6 +54,12 @@ class ViewModelFactory private constructor(
                     GenreViewModel(movieRepository)
                 isAssignableFrom(ListMovieViewModel::class.java) ->
                     ListMovieViewModel(movieRepository)
+                isAssignableFrom(CastViewModel::class.java) ->
+                    CastViewModel(movieRepository)
+                isAssignableFrom(ProducerViewModel::class.java) ->
+                    ProducerViewModel(movieRepository)
+                isAssignableFrom(ActorViewModel::class.java) ->
+                    ActorViewModel(movieRepository)
                 else ->
                     throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
             }

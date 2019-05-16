@@ -8,7 +8,7 @@ import android.content.Intent
 import android.os.Bundle
 import phuchh.sunasterisk.projectmoviedb.R
 import phuchh.sunasterisk.projectmoviedb.adapter.AdapterCallback
-import phuchh.sunasterisk.projectmoviedb.adapter.MovieRecyclerAdapter
+import phuchh.sunasterisk.projectmoviedb.adapter.DataRecyclerAdapter
 import phuchh.sunasterisk.projectmoviedb.base.BaseActivity
 import phuchh.sunasterisk.projectmoviedb.data.model.Movie
 import phuchh.sunasterisk.projectmoviedb.data.model.response.ApiResponse
@@ -30,7 +30,7 @@ class ListMovieActivity : BaseActivity<ActivityListMovieBinding, ListMovieViewMo
     override fun getLayoutRes(): Int = R.layout.activity_list_movie
     override lateinit var viewModel: ListMovieViewModel
     private lateinit var viewBinding: ActivityListMovieBinding
-    private lateinit var movieAdapter: MovieRecyclerAdapter
+    private lateinit var movieAdapter: DataRecyclerAdapter<Movie>
 
     override fun initComponent(viewBinding: ActivityListMovieBinding, savedInstanceState: Bundle?) {
         this.viewBinding = viewBinding
@@ -41,8 +41,7 @@ class ListMovieActivity : BaseActivity<ActivityListMovieBinding, ListMovieViewMo
     }
 
     private fun initAdapter() {
-        movieAdapter = MovieRecyclerAdapter(movieClickCallback)
-        movieAdapter.setLayoutRes(R.layout.item_list_movie)
+        movieAdapter = DataRecyclerAdapter(movieClickCallback, R.layout.item_list_movie)
         viewBinding.recyclerListMovie.adapter = movieAdapter
     }
 
@@ -69,7 +68,7 @@ class ListMovieActivity : BaseActivity<ActivityListMovieBinding, ListMovieViewMo
                 showToast(error.message!!)
                 return
             }
-            movieAdapter.setMovies(movies!!)
+            movieAdapter.setData(movies!!)
         }
     }
 

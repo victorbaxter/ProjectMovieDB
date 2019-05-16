@@ -6,7 +6,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import phuchh.sunasterisk.projectmoviedb.R
 import phuchh.sunasterisk.projectmoviedb.adapter.AdapterCallback
-import phuchh.sunasterisk.projectmoviedb.adapter.GenreRecyclerAdapter
+import phuchh.sunasterisk.projectmoviedb.adapter.DataRecyclerAdapter
 import phuchh.sunasterisk.projectmoviedb.base.BaseFragment
 import phuchh.sunasterisk.projectmoviedb.data.model.Genre
 import phuchh.sunasterisk.projectmoviedb.databinding.FragmentGenreBinding
@@ -21,12 +21,12 @@ class GenreFragment : BaseFragment<FragmentGenreBinding, GenreViewModel>() {
     override fun getLayoutRes(): Int = R.layout.fragment_genre
     override lateinit var viewModel: GenreViewModel
     private lateinit var viewBinding: FragmentGenreBinding
-    private lateinit var genreAdapter: GenreRecyclerAdapter
+    private lateinit var genreAdapter: DataRecyclerAdapter<Genre>
 
     override fun initComponent(viewBinding: FragmentGenreBinding, savedInstanceState: Bundle?) {
         this.viewBinding = viewBinding
         initViewModel()
-        genreAdapter = GenreRecyclerAdapter(genreClickCallback)
+        genreAdapter = DataRecyclerAdapter(genreClickCallback, R.layout.item_genre)
         viewBinding.recyclerMovieGenre.adapter = genreAdapter
         observeViewModel()
     }
@@ -34,7 +34,7 @@ class GenreFragment : BaseFragment<FragmentGenreBinding, GenreViewModel>() {
     private fun observeViewModel() {
         viewModel.genres.observe(viewLifecycleOwner, Observer<List<Genre>> {
             if (it != null) {
-                genreAdapter.setGenres(it)
+                genreAdapter.setData(it)
             }
         })
     }
