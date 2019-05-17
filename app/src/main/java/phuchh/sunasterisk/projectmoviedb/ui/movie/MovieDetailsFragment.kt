@@ -10,7 +10,6 @@ import phuchh.sunasterisk.projectmoviedb.base.BaseFragment
 import phuchh.sunasterisk.projectmoviedb.data.model.Movie
 import phuchh.sunasterisk.projectmoviedb.data.model.response.ApiResponse
 import phuchh.sunasterisk.projectmoviedb.databinding.FragmentMovieDetailsBinding
-import phuchh.sunasterisk.projectmoviedb.utils.BindingUtils
 import phuchh.sunasterisk.projectmoviedb.utils.ViewModelFactory
 
 class MovieDetailsFragment : BaseFragment<FragmentMovieDetailsBinding, MovieDetailsViewModel>() {
@@ -59,18 +58,7 @@ class MovieDetailsFragment : BaseFragment<FragmentMovieDetailsBinding, MovieDeta
                 showToast(error.message!!)
                 return
             }
-            setMovieDetails(movie!!)
+            viewBinding.movie = movie
         }
-    }
-
-    private fun setMovieDetails(movie: Movie) {
-        BindingUtils.bindImage(viewBinding.imageDetailsPoster, movie.posterPath!!)
-        viewBinding.textDetailsTitle.text = movie.title
-        viewBinding.textDetailsDate.text = movie.releaseDate
-        viewBinding.textDetailsDuration.text = movie.runtime.toString()
-        viewBinding.textDetailsInfo.text = movie.overview
-        viewBinding.textDetailsStatus.text = movie.status
-        BindingUtils.bindGenres(viewBinding.textDetailsGenre, movie)
-        BindingUtils.bindProductionCompany(viewBinding.textDetailsProduction, movie)
     }
 }

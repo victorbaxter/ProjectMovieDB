@@ -158,6 +158,8 @@ class MovieRepository private constructor(
 
     fun getMoviesByActor(id: Int, page:Int) = fetchMovies(remote.getMoviesByActor(id, page))
 
+    fun searchMoviesByName(query:String, page: Int) = fetchMovies(remote.searchMovieByName(query, page))
+
     private fun fetchMovies(call: Call<MovieResponse>): LiveData<ApiResponse<List<Movie>>> {
         val data = MutableLiveData<ApiResponse<List<Movie>>>()
         call.enqueue(object : Callback<MovieResponse> {

@@ -57,7 +57,6 @@ class ProducerFragment :
                     updateUI(it)
                 }
             })
-
     }
 
     private val castClickCallback = object : AdapterCallback {

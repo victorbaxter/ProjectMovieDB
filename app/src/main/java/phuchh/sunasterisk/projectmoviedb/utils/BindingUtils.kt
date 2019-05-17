@@ -4,6 +4,7 @@ import android.databinding.BindingAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import phuchh.sunasterisk.projectmoviedb.R
+import phuchh.sunasterisk.projectmoviedb.data.model.Actor
 import phuchh.sunasterisk.projectmoviedb.data.model.Movie
 
 object BindingUtils {
@@ -18,7 +19,8 @@ object BindingUtils {
 
     @JvmStatic
     @BindingAdapter("bindProductionCompany")
-    fun bindProductionCompany(textView: TextView, movie: Movie) {
+    fun bindProductionCompany(textView: TextView, movie: Movie?) {
+        if (movie == null) return
         if (movie.productionCompanies != null) {
             textView.text = StringUtils.getProductionCompany(movie.productionCompanies)
             textView.isSelected = true
@@ -28,11 +30,19 @@ object BindingUtils {
 
     @JvmStatic
     @BindingAdapter("bindGenres")
-    fun bindGenres(textView: TextView, movie: Movie) {
+    fun bindGenres(textView: TextView, movie: Movie?) {
+        if (movie == null) return
         val genres = movie.genres
         if (genres != null) {
             textView.text = StringUtils.getGenres(genres)
             textView.isSelected = true
         }
+    }
+
+    @JvmStatic
+    @BindingAdapter("bindActorPoB")
+    fun bindActorPoB(textView: TextView, actor: Actor?) {
+        if (actor == null) return
+        textView.text = StringUtils.getActorPOB(actor)
     }
 }

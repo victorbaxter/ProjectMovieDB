@@ -7,6 +7,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.design.widget.TabLayout
 import android.support.v4.view.ViewPager
+import android.view.View
 import phuchh.sunasterisk.projectmoviedb.R
 import phuchh.sunasterisk.projectmoviedb.adapter.AdapterCallback
 import phuchh.sunasterisk.projectmoviedb.adapter.DataRecyclerAdapter
@@ -16,6 +17,7 @@ import phuchh.sunasterisk.projectmoviedb.data.model.Movie
 import phuchh.sunasterisk.projectmoviedb.data.model.response.ApiResponse
 import phuchh.sunasterisk.projectmoviedb.databinding.FragmentHomeBinding
 import phuchh.sunasterisk.projectmoviedb.ui.details.DetailsActivity
+import phuchh.sunasterisk.projectmoviedb.ui.search.SearchActivity
 import phuchh.sunasterisk.projectmoviedb.utils.ViewModelFactory
 import java.util.*
 
@@ -43,6 +45,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
         indicator = viewBinding.indicator
         sliderAdapter = SliderAdapter(context!!)
         observeViewModel()
+        viewBinding.layoutSearch.setOnClickListener(searchOnClick)
     }
 
     private fun initAdapter(viewBinding: FragmentHomeBinding) {
@@ -117,6 +120,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
             }
         }
     }
+
+    private val searchOnClick = View.OnClickListener { startActivity(SearchActivity.getIntent(context!!))}
 
     private fun initSlider() {
         pagerLatest.adapter = sliderAdapter

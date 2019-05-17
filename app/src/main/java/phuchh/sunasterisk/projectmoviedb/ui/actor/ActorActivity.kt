@@ -15,8 +15,6 @@ import phuchh.sunasterisk.projectmoviedb.data.model.Movie
 import phuchh.sunasterisk.projectmoviedb.data.model.response.ApiResponse
 import phuchh.sunasterisk.projectmoviedb.databinding.ActivityActorBinding
 import phuchh.sunasterisk.projectmoviedb.ui.details.DetailsActivity
-import phuchh.sunasterisk.projectmoviedb.utils.BindingUtils
-import phuchh.sunasterisk.projectmoviedb.utils.StringUtils
 import phuchh.sunasterisk.projectmoviedb.utils.ViewModelFactory
 
 class ActorActivity : BaseActivity<ActivityActorBinding, ActorViewModel>() {
@@ -60,7 +58,7 @@ class ActorActivity : BaseActivity<ActivityActorBinding, ActorViewModel>() {
             getProfile(id).observe(this@ActorActivity,
                 Observer<ApiResponse<Actor>> {
                     if (!hasError(it)) {
-                        setData(it!!.result!!)
+                        viewBinding.actor = it!!.result
                     }
                 })
             getMoviesByActor(id, 1).observe(this@ActorActivity, Observer {
@@ -89,14 +87,5 @@ class ActorActivity : BaseActivity<ActivityActorBinding, ActorViewModel>() {
                 startActivity(DetailsActivity.getIntent(this@ActorActivity, id))
             }
         }
-    }
-
-    private fun setData(actor: Actor) {
-        viewBinding.textActorName.text = actor.name
-        viewBinding.textActorBorn.text = StringUtils.getActorPOB(actor)
-        viewBinding.textActorDepartment.text = actor.department
-        viewBinding.textActorBio.text = actor.biography
-        BindingUtils.bindImage(viewBinding.imageActorPoster, actor.profilePath)
-        viewBinding.textActorDied.text = actor.deathDay
     }
 }

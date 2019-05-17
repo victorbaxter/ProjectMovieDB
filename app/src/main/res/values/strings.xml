@@ -23,5 +23,6 @@
     <string name="title_born">Born:</string>
     <string name="title_died">Died:</string>
     <string name="title_list_department">Department:</string>
-    <string name="title_movies">Movies</string>
+    <string name="title_movies">Related Movies</string>
+    <string name="title_minutes"> minutes</string>
 </resources>

@@ -20,13 +20,13 @@
                     android:fontFamily="@font/lato_bold"
                     android:layout_gravity="center"/>
             <ImageButton
-                    android:id="@+id/btn_details_back"
+                    android:id="@+id/btnDetailsBack"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_back"
                     android:background="@color/color_white"/>
             <ImageButton
-                    android:id="@+id/btn_details_like"
+                    android:id="@+id/btnDetailsLike"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_like"
@@ -34,7 +34,7 @@
                     android:layout_gravity="end"/>
         </FrameLayout>
         <fragment
-                android:id="@+id/fragment_youtube"
+                android:id="@+id/fragmentYoutube"
                 android:name="phuchh.sunasterisk.projectmoviedb.ui.trailer.YouTubeFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>

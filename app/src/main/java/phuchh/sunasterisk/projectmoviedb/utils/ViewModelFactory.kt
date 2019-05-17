@@ -15,6 +15,7 @@ import phuchh.sunasterisk.projectmoviedb.ui.list_movie.ListMovieViewModel
 import phuchh.sunasterisk.projectmoviedb.ui.main.MainViewModel
 import phuchh.sunasterisk.projectmoviedb.ui.movie.MovieDetailsViewModel
 import phuchh.sunasterisk.projectmoviedb.ui.producer.ProducerViewModel
+import phuchh.sunasterisk.projectmoviedb.ui.search.SearchViewModel
 
 class ViewModelFactory private constructor(
     private val movieRepository: MovieRepository
@@ -60,6 +61,8 @@ class ViewModelFactory private constructor(
                     ProducerViewModel(movieRepository)
                 isAssignableFrom(ActorViewModel::class.java) ->
                     ActorViewModel(movieRepository)
+                isAssignableFrom(SearchViewModel::class.java) ->
+                    SearchViewModel(movieRepository)
                 else ->
                     throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
             }

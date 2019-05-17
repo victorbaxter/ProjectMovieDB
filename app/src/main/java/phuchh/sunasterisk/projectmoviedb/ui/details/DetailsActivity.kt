@@ -4,7 +4,6 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
-import android.content.res.Configuration
 import android.os.Bundle
 import phuchh.sunasterisk.projectmoviedb.R
 import phuchh.sunasterisk.projectmoviedb.adapter.DetailsViewPagerAdapter
@@ -44,13 +43,13 @@ class DetailsActivity : BaseActivity<ActivityDetailsBinding, DetailsViewModel>()
         observeViewModel(movieId)
         initTabs(viewBinding, movieId)
         viewBinding.btnDetailsBack.setOnClickListener { onBackPressed() }
-        youTubeFragment = supportFragmentManager.findFragmentById(R.id.fragment_youtube) as YouTubeFragment
+        youTubeFragment = supportFragmentManager.findFragmentById(R.id.fragmentYoutube) as YouTubeFragment
     }
 
-    override fun onConfigurationChanged(newConfig: Configuration) {
-        super.onConfigurationChanged(newConfig)
-        youTubeFragment.setFullScreen(newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE)
-    }
+//    override fun onConfigurationChanged(newConfig: Configuration) {
+//        super.onConfigurationChanged(newConfig)
+//        youTubeFragment.setFullScreen(newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE)
+//    }
 
     private fun initViewModel() {
         viewModel = ViewModelProviders
