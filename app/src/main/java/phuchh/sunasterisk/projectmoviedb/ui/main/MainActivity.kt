@@ -13,6 +13,7 @@ import phuchh.sunasterisk.projectmoviedb.adapter.SliderAdapter
 import phuchh.sunasterisk.projectmoviedb.base.BaseActivity
 import phuchh.sunasterisk.projectmoviedb.data.model.Movie
 import phuchh.sunasterisk.projectmoviedb.databinding.ActivityMainBinding
+import phuchh.sunasterisk.projectmoviedb.ui.favourite.FavoriteFragment
 import phuchh.sunasterisk.projectmoviedb.ui.genre.GenreFragment
 import phuchh.sunasterisk.projectmoviedb.ui.home.HomeFragment
 import phuchh.sunasterisk.projectmoviedb.utils.Navigation
@@ -65,7 +66,8 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
                     return true
                 }
                 R.id.navigation_fav -> {
-                    //TODO: Update fav
+                    fragment = FavoriteFragment()
+                    replaceFragment(fragment, R.id.frame_container, false, TAG)
                     navigation = Navigation.FAVOURITE
                     return true
                 }

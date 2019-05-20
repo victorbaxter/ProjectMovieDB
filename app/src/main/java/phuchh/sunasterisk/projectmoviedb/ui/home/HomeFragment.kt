@@ -43,7 +43,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
         initAdapter(viewBinding)
         pagerLatest = viewBinding.pagerLatest
         indicator = viewBinding.indicator
-        sliderAdapter = SliderAdapter(context!!)
+        sliderAdapter = SliderAdapter(movieClickCallback, context!!)
         observeViewModel()
         viewBinding.layoutSearch.setOnClickListener(searchOnClick)
     }
@@ -121,7 +121,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
         }
     }
 
-    private val searchOnClick = View.OnClickListener { startActivity(SearchActivity.getIntent(context!!))}
+    private val searchOnClick = View.OnClickListener { startActivity(SearchActivity.getIntent(context!!)) }
 
     private fun initSlider() {
         pagerLatest.adapter = sliderAdapter

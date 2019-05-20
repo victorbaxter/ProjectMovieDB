@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import phuchh.sunasterisk.projectmoviedb.R
 import phuchh.sunasterisk.projectmoviedb.adapter.DetailsViewPagerAdapter
 import phuchh.sunasterisk.projectmoviedb.base.BaseActivity
@@ -17,12 +18,15 @@ import phuchh.sunasterisk.projectmoviedb.ui.producer.ProducerFragment
 import phuchh.sunasterisk.projectmoviedb.ui.trailer.YouTubeFragment
 import phuchh.sunasterisk.projectmoviedb.utils.ViewModelFactory
 
+
 class DetailsActivity : BaseActivity<ActivityDetailsBinding, DetailsViewModel>() {
     companion object {
         private const val TITLE_DETAILS = "Details"
         private const val TITLE_CAST = "Cast"
         private const val TITLE_PRODUCERS = "Producers"
         private const val EXTRA_MOVIE_ID = "phuchh.sunasterisk.projectmoviedb.extras.EXTRA_MOVIE_ID"
+        private const val ADDED_MSG = "Added to favorite"
+        private const val REMOVED_MSG = "Removed from favorite"
 
         fun getIntent(context: Context, id: Int): Intent {
             val intent = Intent(context, DetailsActivity::class.java)
@@ -35,6 +39,12 @@ class DetailsActivity : BaseActivity<ActivityDetailsBinding, DetailsViewModel>()
     override lateinit var viewModel: DetailsViewModel
     private lateinit var viewBinding: ActivityDetailsBinding
     private lateinit var youTubeFragment: YouTubeFragment
+    private lateinit var movie: Movie
+
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.dispose()
+    }
 
     override fun initComponent(viewBinding: ActivityDetailsBinding, savedInstanceState: Bundle?) {
         this.viewBinding = viewBinding
@@ -44,12 +54,17 @@ class DetailsActivity : BaseActivity<ActivityDetailsBinding, DetailsViewModel>()
         initTabs(viewBinding, movieId)
         viewBinding.btnDetailsBack.setOnClickListener { onBackPressed() }
         youTubeFragment = supportFragmentManager.findFragmentById(R.id.fragmentYoutube) as YouTubeFragment
-    }
+        viewBinding.btnDetailsLike.setOnClickListener {
+            viewModel.addFavorite(movie)
+            showToast(ADDED_MSG)
+        }
+        viewBinding.btnDetailsDislike.setOnClickListener {
+            viewModel.deleteFavorite(movie)
+            showToast(REMOVED_MSG)
 
-//    override fun onConfigurationChanged(newConfig: Configuration) {
-//        super.onConfigurationChanged(newConfig)
-//        youTubeFragment.setFullScreen(newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE)
-//    }
+        }
+        viewModel.isFavorite(movieId)
+    }
 
     private fun initViewModel() {
         viewModel = ViewModelProviders
@@ -70,10 +85,15 @@ class DetailsActivity : BaseActivity<ActivityDetailsBinding, DetailsViewModel>()
     private fun observeViewModel(movieId: Int) {
         viewModel.getMovieDetails(movieId).observe(this,
             Observer<ApiResponse<Movie>> {
-                if (it != null) {
+                it?.let {
                     updateUI(it)
+                    movie = it.result!!
                 }
             })
+        viewModel.isFavorite.observe(this, Observer {
+            viewBinding.btnDetailsLike.visibility = if (it!!) View.INVISIBLE else View.VISIBLE
+            viewBinding.btnDetailsDislike.visibility = if (!it) View.GONE else View.VISIBLE
+        })
     }
 
     private fun updateUI(response: ApiResponse<Movie>?) {
@@ -84,8 +104,11 @@ class DetailsActivity : BaseActivity<ActivityDetailsBinding, DetailsViewModel>()
                 showToast(error.message!!)
                 return
             }
-            viewBinding.textMovieTitle.text = movie!!.title
-            youTubeFragment.setTrailerKey(movie.videoResult!!.videos!![0].key!!)
+            viewBinding.movie = movie
+            if (movie!!.videoResult!!.videos!!.isNotEmpty()) {
+                val trailer = movie.videoResult!!.videos!!.filter { it.type.equals("trailer", true) }
+                youTubeFragment.setTrailerKey(trailer[0].key!!)
+            }
         }
     }
 }

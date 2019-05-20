@@ -1,7 +1,6 @@
 package phuchh.sunasterisk.projectmoviedb.data.source
 
-import android.databinding.ObservableArrayList
-import io.reactivex.Observable
+import android.arch.lifecycle.LiveData
 import phuchh.sunasterisk.projectmoviedb.data.model.Actor
 import phuchh.sunasterisk.projectmoviedb.data.model.Movie
 import phuchh.sunasterisk.projectmoviedb.data.model.response.CreditResponse
@@ -11,13 +10,13 @@ import retrofit2.Call
 
 interface MovieDataSource {
     interface Local {
-        fun getAllFavorite(): ObservableArrayList<Movie>
+        fun getAllFavorite(): LiveData<List<Movie>>
 
-        fun addFavorite(movie: Movie): Boolean
+        fun addFavorite(movie: Movie)
 
-        fun deleteFavorite(movie: Movie): Boolean
+        fun deleteFavorite(movie: Movie)
 
-        fun isFavorite(movieId: Int): Boolean
+        fun getMovieById(id: Int): Movie
     }
 
     interface Remote {
@@ -37,7 +36,7 @@ interface MovieDataSource {
 
         fun getMoviesByGenre(genreId: Int, page: Int): Call<MovieResponse>
 
-        fun getCredits(movieId: Int):Call<CreditResponse>
+        fun getCredits(movieId: Int): Call<CreditResponse>
 
         fun getMoviesByActor(actorId: Int, page: Int): Call<MovieResponse>
 

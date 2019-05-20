@@ -20,8 +20,7 @@ object BindingUtils {
     @JvmStatic
     @BindingAdapter("bindProductionCompany")
     fun bindProductionCompany(textView: TextView, movie: Movie?) {
-        if (movie == null) return
-        if (movie.productionCompanies != null) {
+        if (movie?.productionCompanies != null) {
             textView.text = StringUtils.getProductionCompany(movie.productionCompanies)
             textView.isSelected = true
         }
@@ -44,5 +43,20 @@ object BindingUtils {
     fun bindActorPoB(textView: TextView, actor: Actor?) {
         if (actor == null) return
         textView.text = StringUtils.getActorPOB(actor)
+    }
+
+    @JvmStatic
+    @BindingAdapter("bindDuration")
+    fun bindDuration(textView: TextView, movie: Movie?) {
+        if (movie == null) return
+        textView.text = StringUtils.getDuration(movie)
+    }
+
+    @JvmStatic
+    @BindingAdapter("bindTextMarquee")
+    fun bindTextMarquee(textView: TextView, text: String?) {
+        if (text == null) return
+        textView.text = text
+        textView.isSelected = true
     }
 }

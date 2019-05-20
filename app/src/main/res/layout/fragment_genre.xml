@@ -22,7 +22,7 @@
                     app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
                 <ImageView
-                        android:id="@+id/image_track_genre"
+                        android:id="@+id/imageTrackGenre"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/dp_250"
                         android:scaleType="centerCrop"
@@ -30,7 +30,7 @@
                         android:src="@drawable/image_genre"/>
 
                 <android.support.v7.widget.Toolbar
-                        android:id="@+id/tool_bar_genre"
+                        android:id="@+id/toolbarGenre"
                         android:layout_width="match_parent"
                         android:layout_height="?attr/actionBarSize"
                         app:layout_collapseMode="pin"
@@ -41,7 +41,7 @@
         </android.support.design.widget.AppBarLayout>
 
         <android.support.v4.widget.NestedScrollView
-                android:id="@+id/nestedscroll_list_genre"
+                android:id="@+id/nestedscrollGenre"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/dp_50"

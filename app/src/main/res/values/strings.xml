@@ -10,7 +10,7 @@
     <string name="title_genres">Genres</string>
     <string name="title_favorite">Favorite</string>
 
-    <string name="title_duration">minutes</string>
+    <string name="title_duration">Duration:</string>
     <string name="title_details_genres">Genres:</string>
     <string name="title_status">Status</string>
     <string name="title_release_date">Date:</string>
@@ -18,11 +18,12 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_vote">Vote Average:</string>
+    <string name="title_vote">IMDB Score:</string>
     <string name="title_list_date">Released Date:</string>
     <string name="title_born">Born:</string>
     <string name="title_died">Died:</string>
     <string name="title_list_department">Department:</string>
     <string name="title_movies">Related Movies</string>
-    <string name="title_minutes"> minutes</string>
+    <string name="title_minutes">minutes</string>
+    <string name="title_fav_movies">Favorite Movies</string>
 </resources>

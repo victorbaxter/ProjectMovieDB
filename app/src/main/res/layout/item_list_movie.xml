@@ -55,8 +55,9 @@
                       android:layout_marginTop="@dimen/dp_5"
                       android:layout_marginStart="@dimen/dp_5"
                       android:fontFamily="@font/lato_light_italic"
+                      android:textColor="@color/color_dark_gold"
                       android:textSize="12sp"
-                      android:text="@{data.status}"/>
+                      android:text="@{String.valueOf(data.voteAverage)}"/>
 
             <TextView android:id="@+id/titleListMovieDate"
                       android:layout_width="wrap_content"

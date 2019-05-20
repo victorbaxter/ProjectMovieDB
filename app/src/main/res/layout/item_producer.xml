@@ -20,10 +20,18 @@
         <TextView android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                   android:singleLine="true"
-                  android:text="@{data.name}"/>
+                  android:ellipsize="marquee"
+                  android:marqueeRepeatLimit="marquee_forever"
+                  bindTextMarquee="@{data.name}"
+                  android:fontFamily="@font/lato"
+                  android:textSize="12sp"/>
         <TextView android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                   android:singleLine="true"
-                  android:text="@{data.job}"/>
+                  android:ellipsize="marquee"
+                  android:marqueeRepeatLimit="marquee_forever"
+                  bindTextMarquee="@{data.job}"
+                  android:fontFamily="@font/lato_light_italic"
+                  android:textSize="12sp"/>
     </LinearLayout>
 </layout>

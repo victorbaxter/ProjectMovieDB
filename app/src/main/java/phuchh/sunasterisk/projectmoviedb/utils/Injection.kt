@@ -7,6 +7,9 @@ import phuchh.sunasterisk.projectmoviedb.data.source.remote.MovieRemoteDataSourc
 
 object Injection {
     fun provideMovieRepository(context: Context): MovieRepository {
-        return MovieRepository.getInstance(MovieRemoteDataSource.getInstance(context), MovieLocalDataSource())
+        return MovieRepository.getInstance(
+            MovieRemoteDataSource.getInstance(context),
+            MovieLocalDataSource.getInstance(context)
+        )
     }
 }

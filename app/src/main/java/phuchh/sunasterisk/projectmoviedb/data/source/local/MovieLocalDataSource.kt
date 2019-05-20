@@ -1,33 +1,28 @@
 package phuchh.sunasterisk.projectmoviedb.data.source.local
 
-import android.databinding.ObservableArrayList
+import android.arch.lifecycle.LiveData
+import android.content.Context
 import phuchh.sunasterisk.projectmoviedb.data.model.Movie
 import phuchh.sunasterisk.projectmoviedb.data.source.MovieDataSource
 
-class MovieLocalDataSource : MovieDataSource.Local {
+class MovieLocalDataSource(context: Context) : MovieDataSource.Local {
     companion object {
         private var instance: MovieLocalDataSource? = null
 
-        fun getInstance(): MovieLocalDataSource {
-            if (instance == null) instance = MovieLocalDataSource()
+        fun getInstance(context: Context): MovieLocalDataSource {
+            if (instance == null) instance = MovieLocalDataSource(context)
             return instance!!
         }
     }
 
-    override fun getAllFavorite(): ObservableArrayList<Movie> {
-        //TODO: Update local
-        return ObservableArrayList()
-    }
+    private val db: AppDatabase? = AppDatabase.getInstance(context)
+    private val movieDao = db!!.movieDao()
 
-    override fun addFavorite(movie: Movie): Boolean {
-        return false
-    }
+    override fun getAllFavorite(): LiveData<List<Movie>> = movieDao.getAllFavorite()
 
-    override fun deleteFavorite(movie: Movie): Boolean {
-        return false
-    }
+    override fun addFavorite(movie: Movie) = movieDao.addFavorite(movie)
 
-    override fun isFavorite(movieId: Int): Boolean {
-        return false
-    }
+    override fun deleteFavorite(movie: Movie) = movieDao.deleteFavorite(movie)
+
+    override fun getMovieById(id: Int): Movie = movieDao.getFavoriteById(id)
 }

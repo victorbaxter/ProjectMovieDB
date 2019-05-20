@@ -2,7 +2,6 @@ package phuchh.sunasterisk.projectmoviedb.data.repository
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
-import android.databinding.ObservableArrayList
 import phuchh.sunasterisk.projectmoviedb.data.model.*
 import phuchh.sunasterisk.projectmoviedb.data.model.response.ApiResponse
 import phuchh.sunasterisk.projectmoviedb.data.model.response.CreditResponse
@@ -38,31 +37,23 @@ class MovieRepository private constructor(
     private var remote = remoteDataSource
     private var local = localDataSource
 
-    fun getAllFavorite(): ObservableArrayList<Movie> {
-        return local.getAllFavorite()
-    }
+    fun getAllFavorite(): LiveData<List<Movie>> = local.getAllFavorite()
 
-    fun addFavorite(movie: Movie): Boolean {
-        return local.addFavorite(movie)
-    }
+    fun addFavorite(movie: Movie) = local.addFavorite(movie)
 
-    fun deleteFavorite(movie: Movie): Boolean {
-        return local.deleteFavorite(movie)
-    }
+    fun deleteFavorite(movie: Movie) = local.deleteFavorite(movie)
 
-    fun isFavorite(movieId: Int): Boolean {
-        return local.isFavorite(movieId)
-    }
+    fun getMovieById(movieId: Int) = local.getMovieById(movieId)
 
-    fun getPopularMovies(): LiveData<ApiResponse<List<Movie>>> = fetchMovies(remote.getPopularMovies())
+    fun getPopularMovies() = fetchMovies(remote.getPopularMovies())
 
-    fun getPlayingMovies(): LiveData<ApiResponse<List<Movie>>> = fetchMovies(remote.getPlayingMovies())
+    fun getPlayingMovies() = fetchMovies(remote.getPlayingMovies())
 
-    fun getTopMovies(): LiveData<ApiResponse<List<Movie>>> = fetchMovies(remote.getTopMovies())
+    fun getTopMovies() = fetchMovies(remote.getTopMovies())
 
-    fun getMoviesTrendingByDay(): LiveData<ApiResponse<List<Movie>>> = fetchMovies(remote.getMoviesTrendingByDay())
+    fun getMoviesTrendingByDay() = fetchMovies(remote.getMoviesTrendingByDay())
 
-    fun getUpComingMovies(): LiveData<ApiResponse<List<Movie>>> = fetchMovies(remote.getComingMovies())
+    fun getUpComingMovies() = fetchMovies(remote.getComingMovies())
 
     fun getMovieDetails(id: Int): LiveData<ApiResponse<Movie>> {
         val data = MutableLiveData<ApiResponse<Movie>>()
@@ -156,9 +147,9 @@ class MovieRepository private constructor(
         return data
     }
 
-    fun getMoviesByActor(id: Int, page:Int) = fetchMovies(remote.getMoviesByActor(id, page))
+    fun getMoviesByActor(id: Int, page: Int) = fetchMovies(remote.getMoviesByActor(id, page))
 
-    fun searchMoviesByName(query:String, page: Int) = fetchMovies(remote.searchMovieByName(query, page))
+    fun searchMoviesByName(query: String, page: Int) = fetchMovies(remote.searchMovieByName(query, page))
 
     private fun fetchMovies(call: Call<MovieResponse>): LiveData<ApiResponse<List<Movie>>> {
         val data = MutableLiveData<ApiResponse<List<Movie>>>()

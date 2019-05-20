@@ -1,41 +1,49 @@
 package phuchh.sunasterisk.projectmoviedb.data.model
 
+import android.arch.persistence.room.Entity
+import android.arch.persistence.room.Ignore
+import android.arch.persistence.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
+@Entity(tableName = "movie")
 class Movie {
+    @PrimaryKey
     @SerializedName("id")
-    val id: Int = 0
+    var id: Int = 0
 
     @SerializedName("backdrop_path")
-    val backdropPath: String? = null
+    var backdropPath: String? = null
 
+    @Ignore
     @SerializedName("genres")
     val genres: List<Genre>? = null
 
     @SerializedName("title")
-    val title: String? = null
+    var title: String? = null
 
     @SerializedName("overview")
-    val overview: String? = null
+    var overview: String? = null
 
     @SerializedName("poster_path")
-    val posterPath: String? = null
+    var posterPath: String? = null
 
+    @Ignore
     @SerializedName("production_companies")
     val productionCompanies: List<ProductionCompany>? = null
 
     @SerializedName("release_date")
-    val releaseDate: String? = null
+    var releaseDate: String? = null
 
     @SerializedName("runtime")
-    val runtime: Int = 0
+    var runtime: Int = 0
 
     @SerializedName("status")
-    val status: String? = null
+    var status: String? = null
 
     @SerializedName("vote_average")
-    val voteAverage: Double = 0.toDouble()
+    var voteAverage: Double = 0.toDouble()
 
+    @Ignore
     @SerializedName("videos")
     val videoResult: VideoResult? = null
 

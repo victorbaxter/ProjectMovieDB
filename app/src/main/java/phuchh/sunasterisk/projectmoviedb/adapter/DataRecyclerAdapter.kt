@@ -38,8 +38,13 @@ class DataRecyclerAdapter<T>(private val callback: AdapterCallback, private val 
         notifyDataSetChanged()
     }
 
+    fun clearAll(){
+        data.clear()
+    }
+
     fun addData(data: List<T>) {
         this.data.addAll(data)
+        notifyDataSetChanged()
     }
 
     class ViewHolder(

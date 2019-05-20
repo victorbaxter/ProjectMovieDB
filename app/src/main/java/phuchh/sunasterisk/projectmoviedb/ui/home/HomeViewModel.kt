@@ -7,7 +7,7 @@ import phuchh.sunasterisk.projectmoviedb.data.model.response.ApiResponse
 import phuchh.sunasterisk.projectmoviedb.data.repository.MovieRepository
 
 
-class HomeViewModel(repository: MovieRepository) : BaseViewModel() {
+class HomeViewModel(val repository: MovieRepository) : BaseViewModel() {
     val popularMovies: LiveData<ApiResponse<List<Movie>>> = repository.getPopularMovies()
     val playingMovies: LiveData<ApiResponse<List<Movie>>> = repository.getPlayingMovies()
     val topMovies: LiveData<ApiResponse<List<Movie>>> = repository.getTopMovies()

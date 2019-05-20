@@ -6,6 +6,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.widget.NestedScrollView
 import phuchh.sunasterisk.projectmoviedb.R
 import phuchh.sunasterisk.projectmoviedb.adapter.AdapterCallback
 import phuchh.sunasterisk.projectmoviedb.adapter.DataRecyclerAdapter
@@ -33,13 +34,32 @@ class ActorActivity : BaseActivity<ActivityActorBinding, ActorViewModel>() {
     override lateinit var viewModel: ActorViewModel
     private lateinit var viewBinding: ActivityActorBinding
     private lateinit var movieAdapter: DataRecyclerAdapter<Movie>
+    private var page = 1
+    private var hasMore = true
 
     override fun initComponent(viewBinding: ActivityActorBinding, savedInstanceState: Bundle?) {
         this.viewBinding = viewBinding
         val id = intent.getIntExtra(EXTRA_CREDIT_ID, 0)
         initViewModel()
+        initToolbar()
         initAdapter()
         observeViewModel(id)
+        loadMovies(id, page)
+        loadMore(id)
+    }
+
+    private fun initToolbar() {
+        viewBinding.toolbarActor.setNavigationOnClickListener { onBackPressed() }
+    }
+
+    private fun loadMore(id: Int) {
+        viewBinding.scrollActor.setOnScrollChangeListener(
+            NestedScrollView.OnScrollChangeListener { v, _, scrollY, _, _ ->
+                if (scrollY == v.getChildAt(0).measuredHeight - v.measuredHeight && hasMore) {
+                    page++
+                    loadMovies(id, page)
+                }
+            })
     }
 
     private fun initAdapter() {
@@ -61,12 +81,17 @@ class ActorActivity : BaseActivity<ActivityActorBinding, ActorViewModel>() {
                         viewBinding.actor = it!!.result
                     }
                 })
-            getMoviesByActor(id, 1).observe(this@ActorActivity, Observer {
-                if (!hasError(it)) {
-                    movieAdapter.setData(it!!.result!!)
-                }
-            })
         }
+    }
+
+    private fun loadMovies(id: Int, page: Int) {
+        viewModel.getMoviesByActor(id, page).observe(this@ActorActivity, Observer {
+            if (!hasError(it)) {
+                if (it!!.result!!.size < 20)
+                    hasMore = false
+                movieAdapter.addData(it.result!!)
+            }
+        })
     }
 
     private fun <T> hasError(response: ApiResponse<T>?): Boolean {

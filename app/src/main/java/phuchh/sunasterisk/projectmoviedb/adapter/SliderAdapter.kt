@@ -1,5 +1,6 @@
 package phuchh.sunasterisk.projectmoviedb.adapter
 
+import android.arch.lifecycle.Lifecycle
 import android.content.Context
 import android.databinding.DataBindingUtil
 import android.support.v4.view.PagerAdapter
@@ -9,8 +10,9 @@ import android.view.View
 import android.view.ViewGroup
 import phuchh.sunasterisk.projectmoviedb.R
 import phuchh.sunasterisk.projectmoviedb.data.model.Movie
+import phuchh.sunasterisk.projectmoviedb.ui.details.DetailsActivity
 
-class SliderAdapter(val context: Context) : PagerAdapter() {
+class SliderAdapter(val callback: AdapterCallback, val context: Context) : PagerAdapter() {
     private var movies: List<Movie>? = null
     override fun getCount(): Int = if (movies == null) 0 else movies!!.size
 
@@ -28,6 +30,7 @@ class SliderAdapter(val context: Context) : PagerAdapter() {
         )
         val view = binding.root
         binding.movie = movies!![position]
+        binding.callback = callback
         val viewPager: ViewPager = container as ViewPager
         viewPager.addView(view, 0)
         return view

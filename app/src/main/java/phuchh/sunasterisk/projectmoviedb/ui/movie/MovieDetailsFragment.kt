@@ -59,6 +59,7 @@ class MovieDetailsFragment : BaseFragment<FragmentMovieDetailsBinding, MovieDeta
                 return
             }
             viewBinding.movie = movie
+            viewBinding.textDetailsTitle.isSelected = true
         }
     }
 }
