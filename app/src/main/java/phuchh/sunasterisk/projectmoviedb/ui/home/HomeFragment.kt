@@ -24,6 +24,10 @@ import java.util.*
 
 class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
+    companion object {
+        private const val DELAY: Long = 4000
+        private const val PERIOD: Long = 6000
+    }
 
     private lateinit var popularAdapter: DataRecyclerAdapter<Movie>
     private lateinit var playingAdapter: DataRecyclerAdapter<Movie>
@@ -67,37 +71,31 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
     private fun observeViewModel() {
         viewModel.run {
-            popularMovies.observe(viewLifecycleOwner,
-                Observer {
-                    updateUI(it, popularAdapter)
-                })
-            playingMovies.observe(viewLifecycleOwner,
-                Observer {
-                    updateUI(it, playingAdapter)
-                })
-            topMovies.observe(viewLifecycleOwner,
-                Observer {
-                    updateUI(it, topAdapter)
-                })
-            upComingMovies.observe(viewLifecycleOwner,
-                Observer {
-                    updateUI(it, comingAdapter)
-                })
-            latestMovies.observe(viewLifecycleOwner,
-                Observer {
-                    if (it != null) {
-                        val error: Throwable? = it.error
-                        val movies: List<Movie>? = it.result
-                        if (error != null) {
-                            showToast(error.message!!)
-
-                        } else {
-                            sliderAdapter.setMovies(movies!!.subList(0, 7))
-                            this@HomeFragment.latestMovies = movies.subList(0, 7)
-                            initSlider()
-                        }
+            popularMovies.observe(viewLifecycleOwner, Observer {
+                updateUI(it, popularAdapter)
+            })
+            playingMovies.observe(viewLifecycleOwner, Observer {
+                updateUI(it, playingAdapter)
+            })
+            topMovies.observe(viewLifecycleOwner, Observer {
+                updateUI(it, topAdapter)
+            })
+            upComingMovies.observe(viewLifecycleOwner, Observer {
+                updateUI(it, comingAdapter)
+            })
+            latestMovies.observe(viewLifecycleOwner, Observer {
+                it?.let {
+                    val error: Throwable? = it.error
+                    val movies: List<Movie>? = it.result
+                    if (error != null) {
+                        showToast(error.message!!)
+                        return@Observer
                     }
-                })
+                    sliderAdapter.setMovies(movies!!.subList(0, 7))
+                    this@HomeFragment.latestMovies = movies.subList(0, 7)
+                    initSlider()
+                }
+            })
         }
     }
 
@@ -126,7 +124,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
     private fun initSlider() {
         pagerLatest.adapter = sliderAdapter
         indicator.setupWithViewPager(pagerLatest)
-        Timer().scheduleAtFixedRate(SliderTimer(), 4000, 6000)
+        Timer().scheduleAtFixedRate(SliderTimer(), DELAY, PERIOD)
     }
 
     inner class SliderTimer : TimerTask() {

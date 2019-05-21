@@ -8,44 +8,43 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginBottom="@dimen/dp_50"
             tools:context=".ui.search.SearchActivity">
 
-        <FrameLayout
+        <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:background="@color/color_white">
-            <LinearLayout
+            <ImageButton android:id="@+id/buttonSearchBack"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:src="@drawable/ic_back"
+                         android:background="@color/color_white"
+                         android:layout_marginTop="@dimen/dp_20"
+                         android:layout_marginStart="@dimen/dp_10"/>
+
+            <android.support.v7.widget.SearchView android:id="@+id/textSearch"
+                                                  android:layout_width="match_parent"
+                                                  android:layout_height="wrap_content"
+                                                  android:layout_marginTop="@dimen/dp_10"
+                                                  android:layout_marginBottom="@dimen/dp_10"
+                                                  android:layout_marginStart="@dimen/dp_10"
+                                                  android:layout_marginEnd="@dimen/dp_20"
+                                                  app:iconifiedByDefault="false"
+                                                  app:queryHint="Search movies"
+                                                  android:background="@drawable/bg_search_box">
+                <requestFocus/>
+            </android.support.v7.widget.SearchView>
+        </LinearLayout>
+
+        <android.support.v4.widget.NestedScrollView android:id="@+id/nestedscrollSearch"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content">
+            <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerSearchMovies"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="@dimen/dp_10"
-                    android:layout_marginBottom="@dimen/dp_10"
-                    android:layout_marginStart="@dimen/dp_20"
-                    android:layout_marginEnd="@dimen/dp_20"
-                    android:background="@drawable/bg_search_box">
-                <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dp_10"
-                        android:layout_gravity="center_vertical"
-                        android:src="@drawable/ic_search"/>
-                <EditText
-                        android:id="@+id/textSearch"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dp_10"
-                        android:layout_marginEnd="@dimen/dp_10"
-                        android:layout_gravity="center_vertical"
-                        android:textSize="12sp">
-                    <requestFocus/>
-                </EditText>
-            </LinearLayout>
-        </FrameLayout>
-        <android.support.v7.widget.RecyclerView
-                android:id="@+id/recyclerSearchMovies"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layoutManager="android.support.v7.widget.LinearLayoutManager"/>
+                    android:layout_height="wrap_content"
+                    app:layoutManager="android.support.v7.widget.LinearLayoutManager"/>
+        </android.support.v4.widget.NestedScrollView>
+
     </LinearLayout>
 </layout>

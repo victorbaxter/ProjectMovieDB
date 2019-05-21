@@ -24,13 +24,28 @@
                   android:layout_margin="@dimen/dp_15"
                   android:text="@{movie.title}"/>
 
-        <ImageView android:id="@+id/imageDetailsPoster"
-                   android:layout_width="@dimen/dp_100"
-                   android:layout_height="@dimen/dp_130"
-                   app:layout_constraintLeft_toLeftOf="parent"
-                   app:layout_constraintTop_toBottomOf="@+id/textDetailsTitle"
-                   android:layout_margin="@dimen/dp_15"
-                   bindImage="@{movie.posterPath}"/>
+        <FrameLayout
+                android:id="@+id/imageDetailsPoster"
+                android:layout_width="@dimen/dp_100"
+                android:layout_height="@dimen/dp_130"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textDetailsTitle"
+                android:layout_margin="@dimen/dp_15">
+            <ImageView android:layout_width="match_parent"
+                       android:layout_height="match_parent"
+                       android:scaleType="centerCrop"
+                       app:bindImage="@{movie.posterPath}"/>
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:background="@drawable/bg_rate"
+                      android:textColor="@color/color_black"
+                      android:textStyle="bold"
+                      android:textSize="12sp"
+                      android:gravity="center"
+                      android:layout_gravity="end"
+                      android:layout_margin="@dimen/dp_5"
+                      android:text="@{String.valueOf( movie.voteAverage)}"/>
+        </FrameLayout>
 
         <TextView android:id="@+id/titleDetailsDuration"
                   android:layout_width="wrap_content"

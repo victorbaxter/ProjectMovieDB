@@ -1,6 +1,7 @@
 package phuchh.sunasterisk.projectmoviedb.data.source
 
 import android.arch.lifecycle.LiveData
+import io.reactivex.Observable
 import phuchh.sunasterisk.projectmoviedb.data.model.Actor
 import phuchh.sunasterisk.projectmoviedb.data.model.Movie
 import phuchh.sunasterisk.projectmoviedb.data.model.response.CreditResponse
@@ -32,20 +33,16 @@ interface MovieDataSource {
 
         fun getMoviesTrendingByDay(): Call<MovieResponse>
 
-        fun getMoviesByCategory(categoryType: String, page: Int): Call<MovieResponse>
+        fun getMoviesByGenre(genreId: Int, page: Int): Observable<MovieResponse>
 
-        fun getMoviesByGenre(genreId: Int, page: Int): Call<MovieResponse>
+        fun getCredits(movieId: Int): Observable<CreditResponse>
 
-        fun getCredits(movieId: Int): Call<CreditResponse>
+        fun getMoviesByActor(actorId: Int, page: Int): Observable<MovieResponse>
 
-        fun getMoviesByActor(actorId: Int, page: Int): Call<MovieResponse>
+        fun getMovieDetails(movieId: Int): Observable<Movie>
 
-        fun getMoviesByCompany(idCompany: Int, page: Int): Call<MovieResponse>
+        fun searchMovieByName(key: String, page: Int): Observable<MovieResponse>
 
-        fun getMovieDetails(movieId: Int): Call<Movie>
-
-        fun searchMovieByName(key: String, page: Int): Call<MovieResponse>
-
-        fun getProfile(actorId: Int): Call<Actor>
+        fun getProfile(actorId: Int): Observable<Actor>
     }
 }

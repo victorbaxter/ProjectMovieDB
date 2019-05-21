@@ -29,7 +29,7 @@ class FavoriteFragment : BaseFragment<FragmentFavoriteBinding, FavoriteViewModel
         this.viewBinding = viewBinding
         initViewModel()
         initAdapter()
-        observeViewModel(id)
+        observeViewModel()
     }
 
     private fun initAdapter() {
@@ -42,7 +42,7 @@ class FavoriteFragment : BaseFragment<FragmentFavoriteBinding, FavoriteViewModel
             .get(FavoriteViewModel::class.java)
     }
 
-    private fun observeViewModel(movieId: Int) {
+    private fun observeViewModel() {
         viewModel.favorite.observe(viewLifecycleOwner,
             Observer<List<Movie>> {
                 it?.let { movies ->

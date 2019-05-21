@@ -13,8 +13,7 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun initView() {
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
+        startActivity(MainActivity.getIntent(this))
         finish()
     }
 }

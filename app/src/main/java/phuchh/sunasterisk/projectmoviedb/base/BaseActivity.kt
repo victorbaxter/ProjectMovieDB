@@ -20,6 +20,11 @@ abstract class BaseActivity<VB : ViewDataBinding, VM : BaseViewModel> : AppCompa
         initComponent(viewBinding, savedInstanceState)
     }
 
+    override fun onDestroy() {
+        viewModel.dispose()
+        super.onDestroy()
+    }
+
     fun replaceFragment(
         fragment: Fragment,
         container: Int,

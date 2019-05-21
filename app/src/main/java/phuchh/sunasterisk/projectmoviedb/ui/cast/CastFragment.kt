@@ -10,10 +10,8 @@ import phuchh.sunasterisk.projectmoviedb.adapter.AdapterCallback
 import phuchh.sunasterisk.projectmoviedb.adapter.DataRecyclerAdapter
 import phuchh.sunasterisk.projectmoviedb.base.BaseFragment
 import phuchh.sunasterisk.projectmoviedb.data.model.Cast
-import phuchh.sunasterisk.projectmoviedb.data.model.response.ApiResponse
 import phuchh.sunasterisk.projectmoviedb.databinding.FragmentCastBinding
 import phuchh.sunasterisk.projectmoviedb.ui.actor.ActorActivity
-import phuchh.sunasterisk.projectmoviedb.ui.movie.MovieDetailsFragment
 import phuchh.sunasterisk.projectmoviedb.utils.ViewModelFactory
 
 class CastFragment : BaseFragment<FragmentCastBinding, CastViewModel>() {
@@ -36,7 +34,8 @@ class CastFragment : BaseFragment<FragmentCastBinding, CastViewModel>() {
         val id = arguments!!.getInt(ARGUMENT_ID)
         initViewModel()
         initAdapter()
-        observeViewModel(id)
+        viewModel.getCast(id)
+        observeViewModel()
     }
 
     private fun initAdapter() {
@@ -49,14 +48,13 @@ class CastFragment : BaseFragment<FragmentCastBinding, CastViewModel>() {
             .get(CastViewModel::class.java)
     }
 
-    private fun observeViewModel(movieId: Int) {
-        viewModel.getCast(movieId).observe(viewLifecycleOwner,
-            Observer<ApiResponse<List<Cast>>> {
-                if (it != null) {
-                    updateUI(it)
-                }
+    private fun observeViewModel() {
+        viewModel.run {
+            cast.observe(viewLifecycleOwner, Observer {
+                it?.let { castAdapter.setData(it) }
             })
-
+            error.observe(viewLifecycleOwner, Observer { it?.let { showToast(it) } })
+        }
     }
 
     private val castClickCallback = object : AdapterCallback {
@@ -64,18 +62,6 @@ class CastFragment : BaseFragment<FragmentCastBinding, CastViewModel>() {
             if (lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
                 startActivity(ActorActivity.getIntent(context!!, id))
             }
-        }
-    }
-
-    private fun updateUI(response: ApiResponse<List<Cast>>?) {
-        if (response != null) {
-            val error: Throwable? = response.error
-            val cast: List<Cast>? = response.result
-            if (error != null) {
-                showToast(error.message!!)
-                return
-            }
-            castAdapter.setData(cast!!)
         }
     }
 

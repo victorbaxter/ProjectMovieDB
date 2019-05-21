@@ -51,7 +51,11 @@ object StringUtils {
     @JvmStatic
     fun getActorPOB(actor: Actor): String {
         val builder = StringBuilder()
-        builder.append(actor.birthday).append(HYPHEN).append(actor.place)
+        builder.append(actor.birthday).append(HYPHEN)
+        actor.place.run {
+            if (this != null)
+                builder.append(this)
+        }
         return builder.toString()
     }
 

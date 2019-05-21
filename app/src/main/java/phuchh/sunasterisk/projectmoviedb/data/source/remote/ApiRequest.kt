@@ -1,5 +1,6 @@
 package phuchh.sunasterisk.projectmoviedb.data.source.remote
 
+import io.reactivex.Observable
 import phuchh.sunasterisk.projectmoviedb.data.model.Actor
 import phuchh.sunasterisk.projectmoviedb.data.model.Movie
 import phuchh.sunasterisk.projectmoviedb.data.model.response.CreditResponse
@@ -29,42 +30,30 @@ interface ApiRequest {
     @GET("trending/movie/day")
     fun getTrendingMoviesByDay(): Call<MovieResponse>
 
-    @GET("movie/{type}")
-    fun getMoviesByCategory(
-        @Path("type") type: String,
-        @Query("page") page: Int
-    ): Call<MovieResponse>
-
     @GET("discover/movie")
     fun getMoviesByGenre(
         @Query("with_genres") idGenre: Int,
         @Query("page") page: Int
-    ): Call<MovieResponse>
+    ): Observable<MovieResponse>
 
     @GET("movie/{movie_id}/credits")
-    fun getCredits(@Path("movie_id") movieId: String): Call<CreditResponse>
+    fun getCredits(@Path("movie_id") movieId: String): Observable<CreditResponse>
 
     @GET("discover/movie")
     fun getMoviesByActor(
         @Query("with_people") id: Int,
         @Query("page") page: Int
-    ): Call<MovieResponse>
-
-    @GET("discover/movie")
-    fun getMoviesByCompany(
-        @Query("with_companies") idCompany: Int,
-        @Query("page") page: Int
-    ): Call<MovieResponse>
+    ): Observable<MovieResponse>
 
     @GET("movie/{movie_id}?append_to_response=videos")
-    fun getMovieDetails(@Path("movie_id") id: String): Call<Movie>
+    fun getMovieDetails(@Path("movie_id") id: String): Observable<Movie>
 
     @GET("search/movie")
     fun searchMovieByName(
         @Query("query") key: String,
         @Query("page") page: Int
-    ): Call<MovieResponse>
+    ): Observable<MovieResponse>
 
     @GET("person/{actor_id}")
-    fun getProfile(@Path("actor_id") actorId: String): Call<Actor>
+    fun getProfile(@Path("actor_id") actorId: String): Observable<Actor>
 }

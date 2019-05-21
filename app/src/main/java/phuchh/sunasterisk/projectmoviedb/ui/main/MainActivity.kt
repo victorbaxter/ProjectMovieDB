@@ -1,29 +1,29 @@
 package phuchh.sunasterisk.projectmoviedb.ui.main
 
-import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.support.design.widget.BottomNavigationView
-import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
-import android.support.v4.view.ViewPager
 import android.view.MenuItem
 import phuchh.sunasterisk.projectmoviedb.R
-import phuchh.sunasterisk.projectmoviedb.adapter.SliderAdapter
 import phuchh.sunasterisk.projectmoviedb.base.BaseActivity
-import phuchh.sunasterisk.projectmoviedb.data.model.Movie
 import phuchh.sunasterisk.projectmoviedb.databinding.ActivityMainBinding
 import phuchh.sunasterisk.projectmoviedb.ui.favourite.FavoriteFragment
 import phuchh.sunasterisk.projectmoviedb.ui.genre.GenreFragment
 import phuchh.sunasterisk.projectmoviedb.ui.home.HomeFragment
 import phuchh.sunasterisk.projectmoviedb.utils.Navigation
 import phuchh.sunasterisk.projectmoviedb.utils.ViewModelFactory
-import java.util.*
 
 class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
     companion object {
         const val TAG = "NAV"
+        fun getIntent(context: Context) = Intent(context, MainActivity::class.java)
     }
+
+    private var pressedTwice = false
 
     override fun getLayoutRes(): Int = R.layout.activity_main
     override lateinit var viewModel: MainViewModel
@@ -36,8 +36,20 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
         showDefaultHome()
     }
 
+    override fun onBackPressed() {
+        if (pressedTwice) {
+            super.onBackPressed()
+            return
+        }
+        pressedTwice = true
+        showToast("Press back again to exit the app")
+
+        Handler().postDelayed({ pressedTwice = false }, 2000)
+    }
+
     private fun initViewModel() {
-        viewModel = ViewModelProviders.of(this, ViewModelFactory.getInstance(application)).get(MainViewModel::class.java)
+        viewModel =
+            ViewModelProviders.of(this, ViewModelFactory.getInstance(application)).get(MainViewModel::class.java)
     }
 
     private fun showDefaultHome() {

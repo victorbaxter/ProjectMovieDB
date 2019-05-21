@@ -11,7 +11,6 @@ import phuchh.sunasterisk.projectmoviedb.R
 import phuchh.sunasterisk.projectmoviedb.adapter.AdapterCallback
 import phuchh.sunasterisk.projectmoviedb.adapter.DataRecyclerAdapter
 import phuchh.sunasterisk.projectmoviedb.base.BaseActivity
-import phuchh.sunasterisk.projectmoviedb.data.model.Actor
 import phuchh.sunasterisk.projectmoviedb.data.model.Movie
 import phuchh.sunasterisk.projectmoviedb.data.model.response.ApiResponse
 import phuchh.sunasterisk.projectmoviedb.databinding.ActivityActorBinding
@@ -44,7 +43,8 @@ class ActorActivity : BaseActivity<ActivityActorBinding, ActorViewModel>() {
         initToolbar()
         initAdapter()
         observeViewModel(id)
-        loadMovies(id, page)
+        viewModel.getProfile(id)
+        viewModel.getMoviesByActor(id, page)
         loadMore(id)
     }
 
@@ -57,7 +57,7 @@ class ActorActivity : BaseActivity<ActivityActorBinding, ActorViewModel>() {
             NestedScrollView.OnScrollChangeListener { v, _, scrollY, _, _ ->
                 if (scrollY == v.getChildAt(0).measuredHeight - v.measuredHeight && hasMore) {
                     page++
-                    loadMovies(id, page)
+                    viewModel.getMoviesByActor(id, page)
                 }
             })
     }
@@ -74,36 +74,19 @@ class ActorActivity : BaseActivity<ActivityActorBinding, ActorViewModel>() {
     }
 
     private fun observeViewModel(id: Int) {
-        viewModel.apply {
-            getProfile(id).observe(this@ActorActivity,
-                Observer<ApiResponse<Actor>> {
-                    if (!hasError(it)) {
-                        viewBinding.actor = it!!.result
-                    }
-                })
+        viewModel.run {
+            actor.observe(this@ActorActivity, Observer {
+                viewBinding.actor = it
+            })
+            movies.observe(this@ActorActivity, Observer {
+                it?.let {
+                    if (it.size < 20)
+                        hasMore = false
+                    movieAdapter.addData(it)
+                }
+            })
+            errors.observe(this@ActorActivity, Observer { message -> message?.let { showToast(it) } })
         }
-    }
-
-    private fun loadMovies(id: Int, page: Int) {
-        viewModel.getMoviesByActor(id, page).observe(this@ActorActivity, Observer {
-            if (!hasError(it)) {
-                if (it!!.result!!.size < 20)
-                    hasMore = false
-                movieAdapter.addData(it.result!!)
-            }
-        })
-    }
-
-    private fun <T> hasError(response: ApiResponse<T>?): Boolean {
-        if (response == null) {
-            return true
-        }
-        val error: Throwable? = response.error
-        if (error != null) {
-            showToast(error.message!!)
-            return true
-        }
-        return false
     }
 
     private val movieClickCallback = object : AdapterCallback {

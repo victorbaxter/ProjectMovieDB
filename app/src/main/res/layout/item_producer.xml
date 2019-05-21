@@ -7,7 +7,7 @@
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                   xmlns:app="http://schemas.android.com/apk/res-auto"
-                  android:layout_width="90dp"
+                  android:layout_width="match_parent"
                   android:layout_height="150dp"
                   android:layout_margin="@dimen/dp_10"
                   android:orientation="vertical"
@@ -23,15 +23,13 @@
                   android:ellipsize="marquee"
                   android:marqueeRepeatLimit="marquee_forever"
                   bindTextMarquee="@{data.name}"
-                  android:fontFamily="@font/lato"
-                  android:textSize="12sp"/>
+                  android:fontFamily="@font/lato"/>
         <TextView android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                   android:singleLine="true"
                   android:ellipsize="marquee"
                   android:marqueeRepeatLimit="marquee_forever"
                   bindTextMarquee="@{data.job}"
-                  android:fontFamily="@font/lato_light_italic"
-                  android:textSize="12sp"/>
+                  android:fontFamily="@font/lato_light_italic"/>
     </LinearLayout>
 </layout>

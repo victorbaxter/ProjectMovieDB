@@ -1,6 +1,5 @@
 package phuchh.sunasterisk.projectmoviedb.base
 
-import android.arch.lifecycle.ViewModel
 import android.databinding.DataBindingUtil
 import android.databinding.ViewDataBinding
 import android.os.Bundle
@@ -22,6 +21,11 @@ abstract class BaseFragment<VB : ViewDataBinding, VM : BaseViewModel> : Fragment
     ): View? {
         viewBinding = DataBindingUtil.inflate(inflater, getLayoutRes(), container, false)
         return viewBinding.root
+    }
+
+    override fun onDestroy() {
+        viewModel.dispose()
+        super.onDestroy()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

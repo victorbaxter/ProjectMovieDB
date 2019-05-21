@@ -2,9 +2,9 @@ package phuchh.sunasterisk.projectmoviedb.data.repository
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
-import phuchh.sunasterisk.projectmoviedb.data.model.*
+import phuchh.sunasterisk.projectmoviedb.data.model.Genre
+import phuchh.sunasterisk.projectmoviedb.data.model.Movie
 import phuchh.sunasterisk.projectmoviedb.data.model.response.ApiResponse
-import phuchh.sunasterisk.projectmoviedb.data.model.response.CreditResponse
 import phuchh.sunasterisk.projectmoviedb.data.model.response.GenreResponse
 import phuchh.sunasterisk.projectmoviedb.data.model.response.MovieResponse
 import phuchh.sunasterisk.projectmoviedb.data.source.local.MovieLocalDataSource
@@ -43,7 +43,7 @@ class MovieRepository private constructor(
 
     fun deleteFavorite(movie: Movie) = local.deleteFavorite(movie)
 
-    fun getMovieById(movieId: Int) = local.getMovieById(movieId)
+    fun getFavouriteById(movieId: Int) = local.getMovieById(movieId)
 
     fun getPopularMovies() = fetchMovies(remote.getPopularMovies())
 
@@ -55,21 +55,7 @@ class MovieRepository private constructor(
 
     fun getUpComingMovies() = fetchMovies(remote.getComingMovies())
 
-    fun getMovieDetails(id: Int): LiveData<ApiResponse<Movie>> {
-        val data = MutableLiveData<ApiResponse<Movie>>()
-        remote.getMovieDetails(id).enqueue(object : Callback<Movie> {
-            override fun onResponse(call: Call<Movie>, response: Response<Movie>) {
-                if (response.isSuccessful) {
-                    data.postValue(ApiResponse(response.body()))
-                }
-            }
-
-            override fun onFailure(call: Call<Movie>, t: Throwable) {
-                data.postValue(ApiResponse(t))
-            }
-        })
-        return data
-    }
+    fun getMovieDetails(id: Int) = remote.getMovieDetails(id)
 
     fun getGenres(): LiveData<List<Genre>> {
         val data = MutableLiveData<List<Genre>>()
@@ -86,70 +72,17 @@ class MovieRepository private constructor(
         return data
     }
 
-    fun getMoviesByGenre(genreId: Int, page: Int): LiveData<ApiResponse<List<Movie>>> =
-        fetchMovies(remote.getMoviesByGenre(genreId, page))
+    fun getMoviesByGenre(genreId: Int, page: Int) = remote.getMoviesByGenre(genreId, page)
 
-    fun getCast(movieId: Int): LiveData<ApiResponse<List<Cast>>> {
-        val data = MutableLiveData<ApiResponse<List<Cast>>>()
-        remote.getCredits(movieId).enqueue(object : Callback<CreditResponse> {
-            override fun onResponse(call: Call<CreditResponse>, response: Response<CreditResponse>) {
-                if (response.isSuccessful) {
-                    data.postValue(ApiResponse(response.body()!!.cast))
-                    return
-                }
-                val error = Throwable(StringUtils.parseError(response))
-                data.postValue(ApiResponse(error))
-            }
+    fun getCast(movieId: Int) = remote.getCredits(movieId)
 
-            override fun onFailure(call: Call<CreditResponse>, t: Throwable) {
-                data.postValue(ApiResponse((t)))
-            }
-        })
-        return data
-    }
+    fun getCrew(movieId: Int) = remote.getCredits(movieId)
 
-    fun getCrew(movieId: Int): LiveData<ApiResponse<List<Crew>>> {
-        val data = MutableLiveData<ApiResponse<List<Crew>>>()
-        remote.getCredits(movieId).enqueue(object : Callback<CreditResponse> {
-            override fun onResponse(call: Call<CreditResponse>, response: Response<CreditResponse>) {
-                if (response.isSuccessful) {
-                    data.postValue(ApiResponse(response.body()!!.crew))
-                    return
-                }
-                val error = Throwable(StringUtils.parseError(response))
-                data.postValue(ApiResponse(error))
-            }
+    fun getProfile(id: Int) = remote.getProfile(id)
 
-            override fun onFailure(call: Call<CreditResponse>, t: Throwable) {
-                data.postValue(ApiResponse((t)))
-            }
-        })
-        return data
-    }
+    fun getMoviesByActor(id: Int, page: Int) = remote.getMoviesByActor(id, page)
 
-    fun getProfile(id: Int): LiveData<ApiResponse<Actor>> {
-        val data = MutableLiveData<ApiResponse<Actor>>()
-        remote.getProfile(id).enqueue(object : Callback<Actor> {
-            override fun onResponse(call: Call<Actor>, response: Response<Actor>) {
-                if (response.isSuccessful) {
-                    data.postValue(ApiResponse(response.body()))
-                    return
-                }
-                val error = Throwable(StringUtils.parseError(response))
-                data.postValue(ApiResponse(error))
-
-            }
-
-            override fun onFailure(call: Call<Actor>, t: Throwable) {
-                data.postValue(ApiResponse((t)))
-            }
-        })
-        return data
-    }
-
-    fun getMoviesByActor(id: Int, page: Int) = fetchMovies(remote.getMoviesByActor(id, page))
-
-    fun searchMoviesByName(query: String, page: Int) = fetchMovies(remote.searchMovieByName(query, page))
+    fun searchMoviesByName(query: String, page: Int) = remote.searchMovieByName(query, page)
 
     private fun fetchMovies(call: Call<MovieResponse>): LiveData<ApiResponse<List<Movie>>> {
         val data = MutableLiveData<ApiResponse<List<Movie>>>()

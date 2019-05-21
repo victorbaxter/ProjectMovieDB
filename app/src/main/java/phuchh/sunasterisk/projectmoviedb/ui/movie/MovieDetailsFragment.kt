@@ -8,7 +8,6 @@ import android.text.method.ScrollingMovementMethod
 import phuchh.sunasterisk.projectmoviedb.R
 import phuchh.sunasterisk.projectmoviedb.base.BaseFragment
 import phuchh.sunasterisk.projectmoviedb.data.model.Movie
-import phuchh.sunasterisk.projectmoviedb.data.model.response.ApiResponse
 import phuchh.sunasterisk.projectmoviedb.databinding.FragmentMovieDetailsBinding
 import phuchh.sunasterisk.projectmoviedb.utils.ViewModelFactory
 
@@ -32,7 +31,8 @@ class MovieDetailsFragment : BaseFragment<FragmentMovieDetailsBinding, MovieDeta
         val id = arguments!!.getInt(ARGUMENT_ID)
         viewBinding.textDetailsInfo.movementMethod = ScrollingMovementMethod()
         initViewModel()
-        observeViewModel(id)
+        viewModel.getMovieDetails(id)
+        observeViewModel()
     }
 
     private fun initViewModel() {
@@ -40,26 +40,18 @@ class MovieDetailsFragment : BaseFragment<FragmentMovieDetailsBinding, MovieDeta
             .get(MovieDetailsViewModel::class.java)
     }
 
-    private fun observeViewModel(movieId: Int) {
-        viewModel.getMovieDetails(movieId).observe(viewLifecycleOwner,
-            Observer<ApiResponse<Movie>> {
-                if (it != null) {
-                    updateUI(it)
-                }
+    private fun observeViewModel() {
+        viewModel.run {
+            movie.observe(viewLifecycleOwner, Observer { movie ->
+                movie?.let { updateUI(it) }
             })
+            error.observe(viewLifecycleOwner, Observer { it?.let { showToast(it) } })
+        }
 
     }
 
-    private fun updateUI(response: ApiResponse<Movie>?) {
-        if (response != null) {
-            val error: Throwable? = response.error
-            val movie: Movie? = response.result
-            if (error != null) {
-                showToast(error.message!!)
-                return
-            }
-            viewBinding.movie = movie
-            viewBinding.textDetailsTitle.isSelected = true
-        }
+    private fun updateUI(movie: Movie) {
+        viewBinding.movie = movie
+        viewBinding.textDetailsTitle.isSelected = true
     }
 }

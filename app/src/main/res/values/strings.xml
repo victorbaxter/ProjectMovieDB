@@ -16,8 +16,6 @@
     <string name="title_release_date">Date:</string>
     <string name="title_production_company">Production:</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_vote">IMDB Score:</string>
     <string name="title_list_date">Released Date:</string>
     <string name="title_born">Born:</string>
@@ -26,4 +24,5 @@
     <string name="title_movies">Related Movies</string>
     <string name="title_minutes">minutes</string>
     <string name="title_fav_movies">Favorite Movies</string>
+    <string name="title_list_movie">Movie List</string>
 </resources>

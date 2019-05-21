@@ -8,6 +8,7 @@ import phuchh.sunasterisk.projectmoviedb.data.model.Actor
 import phuchh.sunasterisk.projectmoviedb.data.model.Movie
 
 object BindingUtils {
+    private const val NOT_YET = "Not Yet"
     @JvmStatic
     @BindingAdapter("bindImage")
     fun bindImage(imageView: ImageView, image_path: String?) {
@@ -58,5 +59,15 @@ object BindingUtils {
         if (text == null) return
         textView.text = text
         textView.isSelected = true
+    }
+
+    @JvmStatic
+    @BindingAdapter("bindDeadDay")
+    fun bindDeadDay(textView: TextView, text: String?) {
+        if (text == null) {
+            textView.text = NOT_YET
+            return
+        }
+        textView.text = text
     }
 }

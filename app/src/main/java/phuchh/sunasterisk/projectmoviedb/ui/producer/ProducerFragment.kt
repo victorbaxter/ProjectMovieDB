@@ -9,12 +9,10 @@ import phuchh.sunasterisk.projectmoviedb.R
 import phuchh.sunasterisk.projectmoviedb.adapter.AdapterCallback
 import phuchh.sunasterisk.projectmoviedb.adapter.DataRecyclerAdapter
 import phuchh.sunasterisk.projectmoviedb.base.BaseFragment
-import phuchh.sunasterisk.projectmoviedb.data.model.Cast
 import phuchh.sunasterisk.projectmoviedb.data.model.Crew
-import phuchh.sunasterisk.projectmoviedb.data.model.response.ApiResponse
-import phuchh.sunasterisk.projectmoviedb.utils.ViewModelFactory
 import phuchh.sunasterisk.projectmoviedb.databinding.FragmentProducerBinding
 import phuchh.sunasterisk.projectmoviedb.ui.actor.ActorActivity
+import phuchh.sunasterisk.projectmoviedb.utils.ViewModelFactory
 
 class ProducerFragment :
     BaseFragment<FragmentProducerBinding, ProducerViewModel>() {
@@ -37,7 +35,8 @@ class ProducerFragment :
         val id = arguments!!.getInt(ARGUMENT_ID)
         initViewModel()
         initAdapter()
-        observeViewModel(id)
+        viewModel.getProducers(id)
+        observeViewModel()
     }
 
     private fun initAdapter() {
@@ -50,13 +49,13 @@ class ProducerFragment :
             .get(ProducerViewModel::class.java)
     }
 
-    private fun observeViewModel(movieId: Int) {
-        viewModel.getProducers(movieId).observe(viewLifecycleOwner,
-            Observer<ApiResponse<List<Crew>>> {
-                if (it != null) {
-                    updateUI(it)
-                }
+    private fun observeViewModel() {
+        viewModel.run {
+            producers.observe(viewLifecycleOwner, Observer {
+                it?.let { crewAdapter.setData(it) }
             })
+            error.observe(viewLifecycleOwner, Observer { it?.let { showToast(it) } })
+        }
     }
 
     private val castClickCallback = object : AdapterCallback {
@@ -64,18 +63,6 @@ class ProducerFragment :
             if (lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
                 startActivity(ActorActivity.getIntent(context!!, id))
             }
-        }
-    }
-
-    private fun updateUI(response: ApiResponse<List<Crew>>?) {
-        if (response != null) {
-            val error: Throwable? = response.error
-            val crews: List<Crew>? = response.result
-            if (error != null) {
-                showToast(error.message!!)
-                return
-            }
-            crewAdapter.setData(crews!!)
         }
     }
 }

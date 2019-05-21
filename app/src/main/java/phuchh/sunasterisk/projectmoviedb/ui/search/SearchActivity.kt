@@ -1,31 +1,29 @@
 package phuchh.sunasterisk.projectmoviedb.ui.search
 
+import android.app.Activity
 import android.arch.lifecycle.Lifecycle
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import android.widget.EditText
+import android.support.v4.widget.NestedScrollView
+import android.support.v7.widget.SearchView
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import phuchh.sunasterisk.projectmoviedb.R
 import phuchh.sunasterisk.projectmoviedb.adapter.AdapterCallback
 import phuchh.sunasterisk.projectmoviedb.adapter.DataRecyclerAdapter
 import phuchh.sunasterisk.projectmoviedb.base.BaseActivity
 import phuchh.sunasterisk.projectmoviedb.data.model.Movie
-import phuchh.sunasterisk.projectmoviedb.data.model.response.ApiResponse
 import phuchh.sunasterisk.projectmoviedb.databinding.ActivitySearchBinding
 import phuchh.sunasterisk.projectmoviedb.ui.details.DetailsActivity
 import phuchh.sunasterisk.projectmoviedb.utils.ViewModelFactory
 
-class SearchActivity : BaseActivity<ActivitySearchBinding, SearchViewModel>() {
+class SearchActivity : BaseActivity<ActivitySearchBinding, SearchViewModel>(), SearchView.OnQueryTextListener {
 
     companion object {
-        fun getIntent(context: Context): Intent {
-            val intent = Intent(context, SearchActivity::class.java)
-            return intent
-        }
+        fun getIntent(context: Context) = Intent(context, SearchActivity::class.java)
     }
 
     override fun getLayoutRes(): Int = R.layout.activity_search
@@ -39,7 +37,46 @@ class SearchActivity : BaseActivity<ActivitySearchBinding, SearchViewModel>() {
         this.viewBinding = viewBinding
         initViewModel()
         initAdapter()
-        searchMovies()
+        initBackBtn()
+        loadMore()
+        observeViewModel()
+        viewBinding.textSearch.setOnQueryTextListener(this)
+    }
+
+    override fun onQueryTextSubmit(query: String?): Boolean {
+        if (query!!.isEmpty()) return false
+        this.query = query
+        movieAdapter.clearAll()
+        viewModel.searchMovies(query, page)
+        return true
+    }
+
+    override fun onQueryTextChange(query: String?): Boolean {
+        if (query!!.isEmpty()) return false
+        this.query = query
+        movieAdapter.clearAll()
+        viewModel.searchMovies(query, page)
+        return true
+    }
+
+    private fun initBackBtn() {
+        viewBinding.buttonSearchBack.setOnClickListener {
+            val editText = viewBinding.textSearch
+            if (editText.hasFocus()) {
+                editText.clearFocus()
+                return@setOnClickListener
+            }
+            onBackPressed()
+        }
+    }
+
+    fun Activity.hideKeyboard() {
+        hideKeyboard(if (currentFocus == null) View(this) else currentFocus)
+    }
+
+    fun Context.hideKeyboard(view: View) {
+        val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
     private fun initAdapter() {
@@ -55,33 +92,26 @@ class SearchActivity : BaseActivity<ActivitySearchBinding, SearchViewModel>() {
     }
 
     private fun observeViewModel() {
-        viewModel.searchMovies(query, page).observe(this@SearchActivity, Observer {
-            if (!hasError(it)) {
-                movieAdapter.addData(it!!.result!!)
-            }
-        })
-    }
-
-    private fun searchMovies(){
-        viewBinding.textSearch.afterTextChanged {
-            query = it
-            movieAdapter.clearAll()
-            observeViewModel()
+        viewModel.run {
+            movies.observe(this@SearchActivity, Observer {
+                it?.let {
+                    movieAdapter.addData(it)
+                    return@Observer
+                }
+                checkNoResult()
+            })
+            error.observe(this@SearchActivity, Observer { it?.let { showToast(it) } })
         }
     }
 
-    fun EditText.afterTextChanged(afterTextChanged: (String) -> Unit) {
-        this.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
-
-            override fun afterTextChanged(editable: Editable?) {
-                afterTextChanged.invoke(editable.toString())
-            }
-        })
+    private fun loadMore() {
+        viewBinding.nestedscrollSearch.setOnScrollChangeListener(
+            NestedScrollView.OnScrollChangeListener { v, _, scrollY, _, _ ->
+                if (scrollY == v.getChildAt(0).measuredHeight - v.measuredHeight) {
+                    page++
+                    viewModel.searchMovies(query, page)
+                }
+            })
     }
 
     private val movieClickCallback = object : AdapterCallback {
@@ -92,15 +122,5 @@ class SearchActivity : BaseActivity<ActivitySearchBinding, SearchViewModel>() {
         }
     }
 
-    private fun <T> hasError(response: ApiResponse<T>?): Boolean {
-        if (response == null) {
-            return true
-        }
-        val error: Throwable? = response.error
-        if (error != null) {
-            showToast(error.message!!)
-            return true
-        }
-        return false
-    }
+    private fun checkNoResult() = showToast("No Result Found")
 }
