@@ -123,7 +123,7 @@ class DetailsActivity : BaseActivity<ActivityDetailsBinding, DetailsViewModel>()
         initTabs()
         val trailer = movie.videoResult!!.videos!!.filter { it.type.equals("trailer", true) }
         if (trailer.isNotEmpty()) {
-            youTubeFragment.setTrailerKey(trailer[0].key!!)
+            youTubeFragment.setTrailerKey(trailer.last().key!!)
             return
         }
         youTubeFragment.setTrailerKey(" ")

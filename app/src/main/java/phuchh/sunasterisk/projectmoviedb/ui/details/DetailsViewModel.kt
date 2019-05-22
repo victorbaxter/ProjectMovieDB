@@ -7,6 +7,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import phuchh.sunasterisk.projectmoviedb.base.BaseViewModel
 import phuchh.sunasterisk.projectmoviedb.data.model.Movie
+import phuchh.sunasterisk.projectmoviedb.data.model.Video
 import phuchh.sunasterisk.projectmoviedb.data.repository.MovieRepository
 
 class DetailsViewModel(private val repository: MovieRepository) : BaseViewModel() {

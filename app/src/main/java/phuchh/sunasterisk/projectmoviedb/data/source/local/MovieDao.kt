@@ -12,7 +12,7 @@ interface MovieDao {
     @Delete
     fun deleteFavorite(movie: Movie)
 
-    @Query("SELECT * FROM movie ORDER BY id DESC")
+    @Query("SELECT * FROM movie ORDER BY releaseDate DESC")
     fun getAllFavorite(): LiveData<List<Movie>>
 
     @Query("SELECT * FROM movie WHERE id = :id")
