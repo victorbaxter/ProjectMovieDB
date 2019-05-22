@@ -72,6 +72,14 @@ class MovieRepository private constructor(
         return data
     }
 
+    fun getPopularMovies(page: Int) = remote.getPopularMovies(page)
+
+    fun getTopMovies(page: Int) = remote.getTopMovies(page)
+
+    fun getUpComingMovies(page: Int) = remote.getComingMovies(page)
+
+    fun getPlayingMovies(page: Int) = remote.getPlayingMovies(page)
+
     fun getMoviesByGenre(genreId: Int, page: Int) = remote.getMoviesByGenre(genreId, page)
 
     fun getCast(movieId: Int) = remote.getCredits(movieId)

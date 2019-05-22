@@ -12,10 +12,14 @@
             android:roundIcon="@drawable/ic_app"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
+        <activity android:name=".ui.category.CategoryActivity">
+        </activity>
         <activity android:name=".ui.search.SearchActivity"/>
         <activity android:name=".ui.actor.ActorActivity"/>
         <activity android:name=".ui.list_movie.ListMovieActivity"/>
-        <activity android:name=".ui.details.DetailsActivity" android:launchMode="singleTask"/>
+        <activity
+                android:name=".ui.details.DetailsActivity"
+                android:launchMode="singleTask"/>
         <activity
                 android:name=".ui.splash.SplashActivity"
                 android:theme="@style/SplashTheme">

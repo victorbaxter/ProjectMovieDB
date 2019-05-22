@@ -74,8 +74,9 @@
                             android:orientation="vertical"
                             android:padding="@dimen/dp_10">
                         <TextView
+                                android:id="@+id/textPopular"
                                 android:layout_height="wrap_content"
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:text="@string/title_popular"
                                 style="@style/RecyclerTitleTheme"/>
                         <android.support.v7.widget.RecyclerView
@@ -97,8 +98,9 @@
                             android:orientation="vertical"
                             android:padding="@dimen/dp_10">
                         <TextView
+                                android:id="@+id/textNowPlaying"
                                 android:layout_height="wrap_content"
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:text="@string/title_nowplaying"
                                 style="@style/RecyclerTitleTheme"/>
                         <android.support.v7.widget.RecyclerView
@@ -120,8 +122,9 @@
                             android:orientation="vertical"
                             android:padding="@dimen/dp_10">
                         <TextView
+                                android:id="@+id/textComing"
                                 android:layout_height="wrap_content"
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:text="@string/title_upcoming"
                                 style="@style/RecyclerTitleTheme"/>
                         <android.support.v7.widget.RecyclerView
@@ -143,8 +146,9 @@
                             android:orientation="vertical"
                             android:padding="@dimen/dp_10">
                         <TextView
+                                android:id="@+id/textTop"
                                 android:layout_height="wrap_content"
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:text="@string/title_toprate"
                                 style="@style/RecyclerTitleTheme"/>
                         <android.support.v7.widget.RecyclerView

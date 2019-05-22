@@ -16,6 +16,7 @@ import phuchh.sunasterisk.projectmoviedb.base.BaseFragment
 import phuchh.sunasterisk.projectmoviedb.data.model.Movie
 import phuchh.sunasterisk.projectmoviedb.data.model.response.ApiResponse
 import phuchh.sunasterisk.projectmoviedb.databinding.FragmentHomeBinding
+import phuchh.sunasterisk.projectmoviedb.ui.category.CategoryActivity
 import phuchh.sunasterisk.projectmoviedb.ui.details.DetailsActivity
 import phuchh.sunasterisk.projectmoviedb.ui.search.SearchActivity
 import phuchh.sunasterisk.projectmoviedb.utils.ViewModelFactory
@@ -50,6 +51,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
         sliderAdapter = SliderAdapter(movieClickCallback, context!!)
         observeViewModel()
         viewBinding.layoutSearch.setOnClickListener(searchOnClick)
+        setupCategory(viewBinding)
     }
 
     private fun initAdapter(viewBinding: FragmentHomeBinding) {
@@ -116,6 +118,21 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
             if (lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
                 startActivity(DetailsActivity.getIntent(context!!, id))
             }
+        }
+    }
+
+    private fun setupCategory(viewBinding: FragmentHomeBinding) {
+        viewBinding.textComing.setOnClickListener {
+            startActivity(CategoryActivity.getIntent(context!!, CategoryActivity.UPCOMING))
+        }
+        viewBinding.textNowPlaying.setOnClickListener {
+            startActivity(CategoryActivity.getIntent(context!!, CategoryActivity.PLAYING))
+        }
+        viewBinding.textPopular.setOnClickListener {
+            startActivity(CategoryActivity.getIntent(context!!, CategoryActivity.POPULAR))
+        }
+        viewBinding.textTop.setOnClickListener {
+            startActivity(CategoryActivity.getIntent(context!!, CategoryActivity.TOP_RATE))
         }
     }
 

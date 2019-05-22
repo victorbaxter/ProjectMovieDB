@@ -30,6 +30,18 @@ interface ApiRequest {
     @GET("trending/movie/day")
     fun getTrendingMoviesByDay(): Call<MovieResponse>
 
+    @GET("movie/popular")
+    fun getPopularMovies(@Query("page") page: Int): Observable<MovieResponse>
+
+    @GET("movie/now_playing")
+    fun getPlayingMovies(@Query("page") page: Int): Observable<MovieResponse>
+
+    @GET("movie/top_rated")
+    fun getTopMovies(@Query("page") page: Int): Observable<MovieResponse>
+
+    @GET("movie/upcoming")
+    fun getComingMovies(@Query("page") page: Int): Observable<MovieResponse>
+
     @GET("discover/movie")
     fun getMoviesByGenre(
         @Query("with_genres") idGenre: Int,

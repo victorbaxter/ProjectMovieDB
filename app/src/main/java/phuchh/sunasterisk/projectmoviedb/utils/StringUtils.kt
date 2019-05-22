@@ -9,6 +9,7 @@ import retrofit2.Response
 object StringUtils {
     private const val HYPHEN = " - "
     private const val MINUTES = " minutes"
+    private const val UNKNOWN = "Unknown"
     @JvmStatic
     fun getImage(image_path: String?): String? {
         if (image_path == null) return null
@@ -50,6 +51,7 @@ object StringUtils {
 
     @JvmStatic
     fun getActorPOB(actor: Actor): String {
+        if (actor.birthday == null) return UNKNOWN
         val builder = StringBuilder()
         builder.append(actor.birthday).append(HYPHEN)
         actor.place.run {

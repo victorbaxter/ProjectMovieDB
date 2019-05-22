@@ -8,6 +8,7 @@ import android.support.annotation.VisibleForTesting
 import phuchh.sunasterisk.projectmoviedb.data.repository.MovieRepository
 import phuchh.sunasterisk.projectmoviedb.ui.actor.ActorViewModel
 import phuchh.sunasterisk.projectmoviedb.ui.cast.CastViewModel
+import phuchh.sunasterisk.projectmoviedb.ui.category.CategoryViewModel
 import phuchh.sunasterisk.projectmoviedb.ui.details.DetailsViewModel
 import phuchh.sunasterisk.projectmoviedb.ui.favourite.FavoriteViewModel
 import phuchh.sunasterisk.projectmoviedb.ui.genre.GenreViewModel
@@ -66,6 +67,8 @@ class ViewModelFactory private constructor(
                     SearchViewModel(movieRepository)
                 isAssignableFrom(FavoriteViewModel::class.java) ->
                     FavoriteViewModel(movieRepository)
+                isAssignableFrom(CategoryViewModel::class.java) ->
+                    CategoryViewModel(movieRepository)
                 else ->
                     throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
             }

@@ -33,6 +33,14 @@ interface MovieDataSource {
 
         fun getMoviesTrendingByDay(): Call<MovieResponse>
 
+        fun getPopularMovies(page: Int): Observable<MovieResponse>
+
+        fun getPlayingMovies(page: Int): Observable<MovieResponse>
+
+        fun getTopMovies(page: Int): Observable<MovieResponse>
+
+        fun getComingMovies(page: Int): Observable<MovieResponse>
+
         fun getMoviesByGenre(genreId: Int, page: Int): Observable<MovieResponse>
 
         fun getCredits(movieId: Int): Observable<CreditResponse>
